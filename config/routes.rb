@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     resources :users
     resources :metas
     resources :actuals
+    resources :tasks
 
 
     post '/users/assignments', to: 'users#assignments'
