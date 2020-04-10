@@ -5,6 +5,18 @@ class V1::TasksController < ApplicationController
     render json: { data: ActiveModel::SerializableResource.new(tasks, user_id: current_user.id,  each_serializer: TaskSerializer ).as_json, klass: 'Task' }, status: :ok
   end
 
+  def add_participants
+    @task = Task.find(params[:id])
+    @task.add_participant(params[:profile_id])
+    render json: { data: TaskSerializer.new(@task).as_json, klass: 'Task' }, status: :ok
+  end
+
+  def remove_participants
+    @task = Task.find(params[:id])
+    @task.remove_participant(params[:profile_id])
+    render json: { data: TaskSerializer.new(@task).as_json, klass: 'Task' }, status: :ok
+  end
+
 
   def show
     @task = Task.find(params[:id])

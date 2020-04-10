@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     post '/profiles/add_experties/:id', to: 'profiles#add_experties'
     post '/profiles/remove_experties/:id', to: 'profiles#remove_experties'
 
+    post '/tasks/participants', to: 'tasks#add_participants'
+    get '/tasks/participants/delete', to: 'tasks#remove_participants'
+
 
 
     post '/roles/abilities', to: 'roles#abilities'
@@ -21,6 +24,7 @@ Rails.application.routes.draw do
     resources :metas
     resources :actuals
     resources :tasks
+    resources :statuses
 
 
     post '/users/assignments', to: 'users#assignments'

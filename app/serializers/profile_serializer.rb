@@ -1,12 +1,9 @@
 class ProfileSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
-  attributes :id, :name, :surename, :fullname, :bio,  :avatar, :metas, :last_login, :channels, :experties
+  attributes :id, :name, :surename, :fullname, :bio,  :avatar, :metas, :last_login,  :experties
 
   belongs_to :user
 
-  def channels
-    object.user.channels
-  end 
   def last_login
     object.user.last_sign_in_at
   end
