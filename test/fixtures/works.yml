@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  details: MyString
+  user_id: 1
+  task_id: 1
+  start: 2020-04-12 00:25:33
+  deadline: 2020-04-12 00:25:33
+  status_id: 1
+  statuses: 
+  participants: 
+
+two:
+  title: MyString
+  details: MyString
+  user_id: 1
+  task_id: 1
+  start: 2020-04-12 00:25:33
+  deadline: 2020-04-12 00:25:33
+  status_id: 1
+  statuses: 
+  participants: 

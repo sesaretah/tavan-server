@@ -1,7 +1,7 @@
-class Task < ApplicationRecord
+class Work < ApplicationRecord
     belongs_to :user
+    belongs_to :task
     belongs_to :status, optional: true
-    has_many :works
 
     def add_participant(profile_id)
         self.participants = [] if self.participants.blank?
@@ -15,14 +15,6 @@ class Task < ApplicationRecord
             self.participants = self.participants.delete(profile_id)
             self.save
         end
-    end
-
-    def start_time
-
-    end
-
-    def deadline_time
-
     end
 
     def append_time(params)

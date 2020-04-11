@@ -11,6 +11,13 @@ class V1::TasksController < ApplicationController
     render json: { data: TaskSerializer.new(@task).as_json, klass: 'Task' }, status: :ok
   end
 
+  def change_status
+    @task = Task.find(params[:id])
+    @task.status_id = params[:status_id]
+    @task.save
+    render json: { data: TaskSerializer.new(@task).as_json, klass: 'Task' }, status: :ok
+  end
+
   def remove_participants
     @task = Task.find(params[:id])
     @task.remove_participant(params[:profile_id])
@@ -26,8 +33,7 @@ class V1::TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     @task.user_id = current_user.id
-    #@task.deadline = JalaliDate.new(params[:deadline].to_datetime).to_g
-    #@task.start = JalaliDate.new(params[:start].to_datetime).to_g
+    @task.append_time(params)
     if @task.save
       @task.share(params[:channel_id]) if !params[:channel_id].blank?
       render json: { data: TaskSerializer.new(@task).as_json, klass: 'Task' }, status: :ok
@@ -36,7 +42,9 @@ class V1::TasksController < ApplicationController
 
   def update
     @task = Task.find(params[:id])
-    if @task.update_attributes(task_params)
+    @task.user_id = current_user.id
+    @task.append_time(params)
+    if @task.save
       render json: { data: TaskSerializer.new(@task, user_id: current_user.id).as_json, klass: 'Task' }, status: :ok
     else
       render json: { data: @task.errors.full_messages  }, status: :ok
@@ -52,5 +60,6 @@ class V1::TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit!
+    #params.permit!
   end
 end

@@ -1,12 +1,18 @@
 class V1::StatusesController < ApplicationController
 
   def index
-    #@friend_ids = Friendship.friend_ids(current_user)
-    #statuses = Status.where('user_id IN (?)', @friend_ids).order('created_at desc')
-    statuses = Status.all
+    statuses = Status.all.order('title DESC')
     render json: { data: ActiveModel::SerializableResource.new(statuses, user_id: current_user.id,  each_serializer: StatusSerializer ).as_json, klass: 'Status' }, status: :ok
   end
 
+  def search
+    if !params[:q].blank?
+      status = Status.search params[:q], star: true
+      render json: { data: ActiveModel::SerializableResource.new(status,  each_serializer: StatusSerializer ).as_json, klass: 'Status' }, status: :ok
+    else 
+      render json: { data: [], klass: 'Status' }, status: :ok
+    end
+  end
 
   def show
     @status = Status.find(params[:id])

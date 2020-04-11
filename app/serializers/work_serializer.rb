@@ -1,14 +1,6 @@
-class TaskSerializer < ActiveModel::Serializer
+class WorkSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
-  attributes :id, :title, :details, :start_date, :deadline_date, 
-             :created_at, :coworkers, :works, :discussions, :participants, 
-             :status, :start_date_j, :deadline_date_j, :start_time, 
-             :deadline_time, :works
-
-  
-  def works
-    object.works
-  end
+  attributes :id, :title, :details, :start_date, :deadline_date, :created_at, :coworkers, :works, :discussions, :participants, :status, :start_date_j, :deadline_date_j, :start_time, :deadline_time
 
   def participants
     result = []
@@ -45,11 +37,13 @@ class TaskSerializer < ActiveModel::Serializer
     object.deadline.in_time_zone("Tehran") if object.deadline
   end
 
-
   def coworkers
     return []
   end
 
+  def works
+    return []
+  end
 
   def discussions
     return []
