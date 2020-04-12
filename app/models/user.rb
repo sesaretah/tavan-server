@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :metas, through: :actuals
   has_many :tasks
   has_many :statuses
+  has_many :tags
 
   def assign(role_id)
     self.assignments = [] if self.assignments.blank?

@@ -18,11 +18,14 @@ Rails.application.routes.draw do
     get '/works/participants/delete', to: 'works#remove_participants'
     post '/works/status', to: 'works#change_status'
 
-
+    get '/comments/delete', to: 'comments#destroy'
     post '/roles/abilities', to: 'roles#abilities'
     get '/roles/abilities/delete', to: 'roles#remove_ability'
 
     get '/statuses/search', to: 'statuses#search'
+    
+    get '/reports/search', to: 'reports#search'
+    get '/tags/search', to: 'tags#search'
 
     resources :profiles
     resources :roles
@@ -32,7 +35,10 @@ Rails.application.routes.draw do
     resources :tasks
     resources :statuses
     resources :works
-
+    resources :reports
+    resources :uploads
+    resources :comments
+    resources :tags
 
     post '/users/assignments', to: 'users#assignments'
     get '/users/assignments/delete', to: 'users#delete_assignment'

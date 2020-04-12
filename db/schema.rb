@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_11_195533) do
+ActiveRecord::Schema.define(version: 2020_04_12_201301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,16 @@ ActiveRecord::Schema.define(version: 2020_04_11_195533) do
     t.index ["uuid"], name: "index_actuals_on_uuid", unique: true
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.text "content"
+    t.integer "user_id"
+    t.integer "parent_id"
+    t.integer "commentable_id"
+    t.string "commentable_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "meta", force: :cascade do |t|
     t.string "meta_type"
     t.integer "user_id"
@@ -67,6 +77,19 @@ ActiveRecord::Schema.define(version: 2020_04_11_195533) do
     t.json "experties"
   end
 
+  create_table "reports", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.json "draft"
+    t.integer "user_id"
+    t.integer "task_id"
+    t.integer "work_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "uuid"
+    t.index ["uuid"], name: "index_reports_on_uuid"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "title"
     t.json "ability"
@@ -84,6 +107,13 @@ ActiveRecord::Schema.define(version: 2020_04_11_195533) do
     t.integer "user_id"
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.string "title"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "title"
     t.text "details"
@@ -95,6 +125,16 @@ ActiveRecord::Schema.define(version: 2020_04_11_195533) do
     t.integer "user_id"
     t.json "participants"
     t.integer "status_id"
+    t.boolean "public"
+    t.json "tags"
+  end
+
+  create_table "uploads", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "uuid"
+    t.index ["uuid"], name: "index_uploads_on_uuid"
   end
 
   create_table "users", force: :cascade do |t|

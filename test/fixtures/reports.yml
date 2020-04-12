@@ -1,15 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  title: MyString
   content: MyText
+  draft: 
   user_id: 1
-  parent_id: 1
-  commentable_id: 1
-  commentable_type: MyString
+  task_id: 1
+  work_id: 1
 
 two:
+  title: MyString
   content: MyText
+  draft: 
   user_id: 1
-  parent_id: 1
-  commentable_id: 1
-  commentable_type: MyString
+  task_id: 1
+  work_id: 1

@@ -34,6 +34,7 @@ class V1::TasksController < ApplicationController
     @task = Task.new(task_params)
     @task.user_id = current_user.id
     @task.append_time(params)
+    @task.append_tags(params[:tags])
     if @task.save
       @task.share(params[:channel_id]) if !params[:channel_id].blank?
       render json: { data: TaskSerializer.new(@task).as_json, klass: 'Task' }, status: :ok
@@ -44,6 +45,7 @@ class V1::TasksController < ApplicationController
     @task = Task.find(params[:id])
     @task.user_id = current_user.id
     @task.append_time(params)
+    @task.append_tags(params[:tags])
     if @task.save
       render json: { data: TaskSerializer.new(@task, user_id: current_user.id).as_json, klass: 'Task' }, status: :ok
     else

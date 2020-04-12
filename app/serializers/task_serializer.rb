@@ -3,11 +3,32 @@ class TaskSerializer < ActiveModel::Serializer
   attributes :id, :title, :details, :start_date, :deadline_date, 
              :created_at, :coworkers, :works, :discussions, :participants, 
              :status, :start_date_j, :deadline_date_j, :start_time, 
-             :deadline_time, :works
+             :deadline_time, :works, :reports, :the_comments, :the_tags
 
   
   def works
-    object.works
+    result = []
+    for work in object.works 
+      if work.status
+        status = {title: work.status.title, color: work.status.color} 
+      else 
+        status = nil
+      end
+      result << {id: work.id, title: work.title, details: work.details, status: status}
+    end
+    return result
+  end
+
+  def reports
+    ActiveModel::SerializableResource.new(object.reports,  each_serializer: ReportSerializer ).as_json
+  end
+
+  def the_comments
+    ActiveModel::SerializableResource.new(object.comments,  each_serializer: CommentSerializer ).as_json
+  end
+
+  def the_tags
+    ActiveModel::SerializableResource.new(object.taggings,  each_serializer: TagSerializer ).as_json
   end
 
   def participants

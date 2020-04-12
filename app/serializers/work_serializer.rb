@@ -1,7 +1,13 @@
 class WorkSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
-  attributes :id, :title, :details, :start_date, :deadline_date, :created_at, :coworkers, :works, :discussions, :participants, :status, :start_date_j, :deadline_date_j, :start_time, :deadline_time
+  attributes :id, :title, :details, :start_date, :deadline_date, :created_at, 
+             :coworkers, :works, :discussions, :participants, :status, 
+             :start_date_j, :deadline_date_j, :start_time, :deadline_time,
+             :task, :reports, :the_comments
 
+  def task
+    object.task
+  end
   def participants
     result = []
     if !object.participants.blank?
@@ -12,6 +18,14 @@ class WorkSerializer < ActiveModel::Serializer
     end
     return result
   end 
+
+  def the_comments
+    ActiveModel::SerializableResource.new(object.comments,  each_serializer: CommentSerializer ).as_json
+  end
+
+  def reports
+    ActiveModel::SerializableResource.new(object.reports,  each_serializer: ReportSerializer ).as_json
+  end
 
   def start_date
     object.start.in_time_zone("Tehran") if object.start
