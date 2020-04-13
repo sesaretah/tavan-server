@@ -1,5 +1,6 @@
 class V1::WorksController < ApplicationController
-
+  before_action :record_visit, only: [:show]
+  
   def index
     works = Work.order('deadline DESC').all
     render json: { data: ActiveModel::SerializableResource.new(works, user_id: current_user.id,  each_serializer: WorkSerializer ).as_json, klass: 'Work' }, status: :ok

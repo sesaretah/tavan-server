@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_12_201301) do
+ActiveRecord::Schema.define(version: 2020_04_13_221908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,17 @@ ActiveRecord::Schema.define(version: 2020_04_12_201301) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "label"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer "notifiable_id"
+    t.string "notifiable_type"
+    t.integer "source_user_id"
+    t.json "target_user_ids"
+    t.string "notification_type"
+    t.boolean "seen"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -153,6 +164,19 @@ ActiveRecord::Schema.define(version: 2020_04_12_201301) do
     t.inet "last_sign_in_ip"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "visits", force: :cascade do |t|
+    t.integer "visitable_id"
+    t.string "visitable_type"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "visitable_action"
+    t.index ["user_id"], name: "index_visits_on_user_id"
+    t.index ["visitable_action"], name: "index_visits_on_visitable_action"
+    t.index ["visitable_id"], name: "index_visits_on_visitable_id"
+    t.index ["visitable_type"], name: "index_visits_on_visitable_type"
   end
 
   create_table "works", force: :cascade do |t|

@@ -1,9 +1,9 @@
 class WorkSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
   attributes :id, :title, :details, :start_date, :deadline_date, :created_at, 
-             :coworkers, :works, :discussions, :participants, :status, 
+             :participants, :status, 
              :start_date_j, :deadline_date_j, :start_time, :deadline_time,
-             :task, :reports, :the_comments
+             :task, :reports, :the_comments, :report_alert, :comment_alert, :deadline_alert
 
   def task
     object.task
@@ -18,6 +18,27 @@ class WorkSerializer < ActiveModel::Serializer
     end
     return result
   end 
+
+  def comment_alert
+    if scope && scope[:user_id]
+      user = User.find(scope[:user_id])
+      return Comment.comments_since(user, object)
+    end
+  end
+
+  def deadline_alert
+    if scope && scope[:user_id]
+      user = User.find(scope[:user_id])
+      return Work.deadline_since(user, object)
+    end
+  end
+
+  def report_alert
+    if scope && scope[:user_id]
+      user = User.find(scope[:user_id])
+      return Report.reports_since(user, object)
+    end
+  end
 
   def the_comments
     ActiveModel::SerializableResource.new(object.comments,  each_serializer: CommentSerializer ).as_json
@@ -51,17 +72,6 @@ class WorkSerializer < ActiveModel::Serializer
     object.deadline.in_time_zone("Tehran") if object.deadline
   end
 
-  def coworkers
-    return []
-  end
-
-  def works
-    return []
-  end
-
-  def discussions
-    return []
-  end
 
   def status
     object.status if object.status

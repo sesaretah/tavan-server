@@ -6,10 +6,10 @@ class V1::CommentsController < ApplicationController
     params[:page].blank? ? @page = 1 : @page = params[:page]
     if @comment.save
       if @comment.commentable_type == 'Task'
-        render json: { data:  TaskSerializer.new(@comment.commentable, user_id: current_user.id, page: @page).as_json, klass: 'Task'}, status: :ok
+        render json: { data:  TaskSerializer.new(@comment.commentable, scope: {user_id: current_user.id}, page: @page).as_json, klass: 'Task'}, status: :ok
       end
       if @comment.commentable_type == 'Work'
-        render json: { data:  WorkSerializer.new(@comment.commentable, user_id: current_user.id, page: @page).as_json, klass: 'Work'}, status: :ok
+        render json: { data:  WorkSerializer.new(@comment.commentable, scope: {user_id: current_user.id}, page: @page).as_json, klass: 'Work'}, status: :ok
       end
     end
   end
@@ -20,10 +20,10 @@ class V1::CommentsController < ApplicationController
     @cm = @comment
     if @comment.destroy
       if @cm.commentable_type == 'Task'
-        render json: { data:  TaskSerializer.new(@cm.commentable, user_id: current_user.id, page: @page).as_json, klass: 'Task'}, status: :ok
+        render json: { data:  TaskSerializer.new(@cm.commentable, scope: {user_id: current_user.id}, page: @page).as_json, klass: 'Task'}, status: :ok
       end
       if @cm.commentable_type == 'Work'
-        render json: { data:  WorkSerializer.new(@cm.commentable, user_id: current_user.id, page: @page).as_json, klass: 'Work'}, status: :ok
+        render json: { data:  WorkSerializer.new(@cm.commentable, scope: {user_id: current_user.id}, page: @page).as_json, klass: 'Work'}, status: :ok
       end
     end
   end

@@ -3,6 +3,7 @@ class Task < ApplicationRecord
     belongs_to :status, optional: true
     has_many :works
     has_many :reports
+    before_save :append_tags
 
     def add_participant(profile_id)
         self.participants = [] if self.participants.blank?
@@ -37,11 +38,10 @@ class Task < ApplicationRecord
         self.deadline = params['deadline'].to_datetime.change({ hour: deadline_time[0].to_i, min: deadline_time[1].to_i, sec: 0 }).asctime.in_time_zone("Tehran")    
     end
 
-    def append_tags(params)
-        tags = params.split(',')
+    def append_tags
         arr = []
-        for tag in tags
-            arr << tag.to_i
+        for tag in self.tags
+            arr << tag['id']
         end
         self.tags = arr
     end
@@ -49,4 +49,5 @@ class Task < ApplicationRecord
     def taggings
         Tag.where('id in (?)', self.tags)
     end
+
 end

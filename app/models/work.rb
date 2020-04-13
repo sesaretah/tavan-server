@@ -3,6 +3,15 @@ class Work < ApplicationRecord
     belongs_to :task
     belongs_to :status, optional: true
     has_many :reports
+    after_create :notify_by_mail
+
+    def notify_by_mail
+        Notification.create(notifiable_id: self.task.id, notifiable_type: 'Task', notification_type: 'Work', source_user_id: self.user_id, target_user_ids: [self.owner.id] , seen: false)
+    end
+
+    def owner
+        self.task.user if self.task
+    end
 
     def add_participant(profile_id)
         self.participants = [] if self.participants.blank?
@@ -28,4 +37,18 @@ class Work < ApplicationRecord
     def comments 
         Comment.where(commentable_type: 'Work', commentable_id: self.id)
     end
+
+    def self.deadline_since(user, obj)
+        flag = false
+       # last_visit = Visit.where(visitable_type: obj.class.name, user_id: user.id, visitable_id: obj.id).order('created_at DESC').first
+        last_work = self.where(task_id: obj.id).order('deadline DESC').first if  obj.class.name == 'Task'
+        last_work = obj if  obj.class.name == 'Work'
+        if !last_work.blank?
+           if Time.now < last_work.deadline  + 2.days 
+             flag = true
+           end
+        end
+        return flag
+    end
+
 end

@@ -52,4 +52,22 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   Rails.application.routes.default_url_options[:host] = 'http://localhost:3001'
+
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  
+  config.active_job.queue_name_prefix = "tavan"
+  config.active_job.queue_name_delimiter = "_"
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: 'mail.ut.ac.ir',
+    port: 587,
+    domain: 'mail.ut.ac.ir',
+    user_name: 'snadmin',
+    password: '30Tue2017',
+    authentication: 'plain',
+    enable_starttls_auto: true
+}
+config.action_mailer.perform_deliveries = true
 end

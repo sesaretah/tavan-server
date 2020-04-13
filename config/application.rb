@@ -30,6 +30,10 @@ module Shoa
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
+    config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    config.i18n.default_locale = :fa
+    config.autoload_paths << Rails.root.join('lib')
+    
     config.api_only = true
     config.middleware.insert_before 0, Rack::Cors do
       allow do

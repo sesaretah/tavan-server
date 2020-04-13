@@ -1,8 +1,9 @@
 class V1::TasksController < ApplicationController
-
+  before_action :record_visit, only: [:show]
+  
   def index
     tasks = Task.order('deadline DESC').all
-    render json: { data: ActiveModel::SerializableResource.new(tasks, user_id: current_user.id,  each_serializer: TaskSerializer ).as_json, klass: 'Task' }, status: :ok
+    render json: { data: ActiveModel::SerializableResource.new(tasks, user_id: current_user.id,  each_serializer: TaskSerializer, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 
   def add_participants
@@ -27,16 +28,13 @@ class V1::TasksController < ApplicationController
 
   def show
     @task = Task.find(params[:id])
-    render json: { data:  TaskSerializer.new(@task, user_id: current_user.id).as_json, klass: 'Task'}, status: :ok
+    render json: { data:  TaskSerializer.new(@task, user_id: current_user.id, scope: {user_id: current_user.id}).as_json, klass: 'Task'}, status: :ok
   end
 
   def create
     @task = Task.new(task_params)
     @task.user_id = current_user.id
-    @task.append_time(params)
-    @task.append_tags(params[:tags])
     if @task.save
-      @task.share(params[:channel_id]) if !params[:channel_id].blank?
       render json: { data: TaskSerializer.new(@task).as_json, klass: 'Task' }, status: :ok
     end
   end
@@ -44,9 +42,7 @@ class V1::TasksController < ApplicationController
   def update
     @task = Task.find(params[:id])
     @task.user_id = current_user.id
-    @task.append_time(params)
-    @task.append_tags(params[:tags])
-    if @task.save
+    if @task.update_attributes(task_params)
       render json: { data: TaskSerializer.new(@task, user_id: current_user.id).as_json, klass: 'Task' }, status: :ok
     else
       render json: { data: @task.errors.full_messages  }, status: :ok
