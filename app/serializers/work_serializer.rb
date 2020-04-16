@@ -3,21 +3,33 @@ class WorkSerializer < ActiveModel::Serializer
   attributes :id, :title, :details, :start_date, :deadline_date, :created_at, 
              :participants, :status, 
              :start_date_j, :deadline_date_j, :start_time, :deadline_time,
-             :task, :reports, :the_comments, :report_alert, :comment_alert, :deadline_alert
+             :task, :reports, :the_comments, :report_alert, :comment_alert,
+            :deadline_alert, :user_access
 
   def task
     object.task
   end
+
   def participants
     result = []
     if !object.participants.blank?
       object.participants.each do |participant|
-        @profile = Profile.find_by_id(participant)
-        result << ProfileSerializer.new(@profile).as_json if !@profile.blank?
+        profile = Profile.find_by_id(participant['user_id'])
+        result << {profile: ProfileSerializer.new(profile).as_json, role: participant['role']}if !profile.blank?
       end
     end
     return result
   end 
+
+  def user_access
+    access = [1]
+    if scope && scope[:user_id]
+      user = User.find(scope[:user_id])
+      role = object.user_role(user)
+      access = object.access(role)
+    end
+    return access
+  end
 
   def comment_alert
     if scope && scope[:user_id]
@@ -61,11 +73,13 @@ class WorkSerializer < ActiveModel::Serializer
   end
 
   def start_date_j
-    JalaliDate.new(object.start).to_s + ' ' + object.start.in_time_zone("Tehran").strftime("%H:%M") if object.start
+    start = JalaliDate.to_jalali(object.start.in_time_zone("Tehran"))
+    "#{start.year}/#{start.month}/#{start.day} " + object.start.in_time_zone("Tehran").strftime("%H:%M") if object.start
   end
 
   def deadline_date_j
-    JalaliDate.new(object.deadline).to_s + ' ' + object.deadline.in_time_zone("Tehran").strftime("%H:%M") if object.deadline
+    deadline = JalaliDate.to_jalali(object.deadline.in_time_zone("Tehran"))
+    "#{deadline.year}/#{deadline.month}/#{deadline.day} " + object.deadline.in_time_zone("Tehran").strftime("%H:%M") if object.deadline
   end
 
   def deadline_date

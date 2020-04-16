@@ -23,5 +23,19 @@ class User < ApplicationRecord
     self.save
   end
 
+  def notify_user
+    code = rand(10 ** 6).to_s.rjust(6,'0')  
+    self.last_code = code
+    self.last_code_datetime = DateTime.now
+    self.last_login = DateTime.now
+    self.save
+    VerificationsMailer.notify_email(self.id, code).deliver_later
+  end
+
+  def self.verify(code)
+    user = self.where('last_code = ? AND last_code_datetime > ?', code, 10.minutes.ago).first
+  end
+
+
   
 end

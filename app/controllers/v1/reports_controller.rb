@@ -18,21 +18,22 @@ class V1::ReportsController < ApplicationController
   def show
     @report = Report.find(params[:id])
     params[:page].blank? ? @page = 1 : @page = params[:page]
-    render json: { data:  ReportSerializer.new(@report, user_id: current_user.id, page: @page).as_json, klass: 'Report'}, status: :ok
+    if valid_report?
+      render json: { data:  ReportSerializer.new(@report, user_id: current_user.id, page: @page).as_json, klass: 'Report'}, status: :ok
+    end
   end
 
   def create
     @report = Report.new(report_params)
     @report.user_id = current_user.id
-    if @report.save
-      @report.share(params[:channel_id]) if !params[:channel_id].blank?
+    if valid_report? && @report.save
       render json: { data: ReportSerializer.new(@report).as_json, klass: 'Report' }, status: :ok
     end
   end
 
   def update
     @report = Report.find(params[:id])
-    if @report.update_attributes(report_params)
+    if valid_report? && @report.update_attributes(report_params)
       render json: { data: ReportSerializer.new(@report, user_id: current_user.id).as_json, klass: 'Report' }, status: :ok
     else
       render json: { data: @report.errors.full_messages  }, status: :ok
@@ -44,6 +45,15 @@ class V1::ReportsController < ApplicationController
     if @report.destroy
       render json: { data: 'OK'}, status: :ok
     end
+  end
+
+  def valid_report?
+    if @report.work
+      valid = is_valid?(@report.work, 'reports') 
+    else 
+      valid = is_valid?(@report.task, 'reports')
+    end
+    return valid
   end
 
   def report_params

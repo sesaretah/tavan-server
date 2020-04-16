@@ -1,6 +1,6 @@
 class NotificationsMailer < ActionMailer::Base
 
-    def notify_email(user_id, notify_type, notifier, notify_text)
+    def notify_email(user_id, notify_type, notifier, notify_text, custom_text)
         @user = User.find(user_id)
         case notify_type
         when  'Work'
@@ -11,6 +11,11 @@ class NotificationsMailer < ActionMailer::Base
             @body = "#{t(:report_notification)}  #{t(:via)} #{notifier} #{t(:onto)} #{notify_text}" 
         when  'Comment'
             @body = "#{t(:comment_notification)}  #{t(:via)} #{notifier} #{t(:onto)} #{notify_text}" 
+        when  'AddParticipant'
+            @body = "#{custom_text}  #{t(:is_added_to)} #{notify_text} #{t(:via)} #{notifier}" 
+        when  'RemoveParticipant'
+            @body = "#{custom_text}  #{t(:removed_from)} #{notify_text} #{t(:via)} #{notifier}"  
+
         end
 
         mail(   :to      => @user.email,

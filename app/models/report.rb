@@ -3,6 +3,24 @@ class Report < ApplicationRecord
     belongs_to :work, optional: true
     belongs_to :user
 
+    after_create :notify_by_mail
+
+    def notify_by_mail
+        if !self.work_id.blank?
+            Notification.create(notifiable_id: self.work.id, notifiable_type: 'Work', notification_type: 'Report', source_user_id: self.user_id, target_user_ids: self.owners , seen: false)
+        else 
+            Notification.create(notifiable_id: self.task.id, notifiable_type: 'Task', notification_type: 'Report', source_user_id: self.user_id, target_user_ids: self.owners , seen: false)
+        end
+    end
+
+    def owners
+        if !self.work_id.blank?
+            self.work.owners
+        else 
+            self.task.owners
+        end
+    end
+
     def profile
         self.user.profile if self.user
     end

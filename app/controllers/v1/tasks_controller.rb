@@ -2,39 +2,51 @@ class V1::TasksController < ApplicationController
   before_action :record_visit, only: [:show]
   
   def index
-    tasks = Task.order('deadline DESC').all
+    params['order'] == 'title' ? tasks = Task.order_by_title_for_user(current_user)  : tasks = Task.order_by_deadline_for_user(current_user) 
+    
     render json: { data: ActiveModel::SerializableResource.new(tasks, user_id: current_user.id,  each_serializer: TaskSerializer, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
+  end
+
+  def change_role
+    @task = Task.find(params[:id])
+    @task.change_role(params[:profile_id], params[:role]) if is_valid?(@task , 'participants')
+    render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 
   def add_participants
     @task = Task.find(params[:id])
-    @task.add_participant(params[:profile_id])
-    render json: { data: TaskSerializer.new(@task).as_json, klass: 'Task' }, status: :ok
+    @task.add_participant(params[:profile_id]) if is_valid?(@task , 'participants')
+    render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 
   def change_status
     @task = Task.find(params[:id])
     @task.status_id = params[:status_id]
-    @task.save
-    render json: { data: TaskSerializer.new(@task).as_json, klass: 'Task' }, status: :ok
+    @task.save if is_valid?(@task, 'statuses')
+    render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 
   def remove_participants
     @task = Task.find(params[:id])
-    @task.remove_participant(params[:profile_id])
-    render json: { data: TaskSerializer.new(@task).as_json, klass: 'Task' }, status: :ok
+    @task.remove_participant(params[:profile_id]) if is_valid?(@task, 'participants', )
+    render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 
 
   def show
     @task = Task.find(params[:id])
-    render json: { data:  TaskSerializer.new(@task, user_id: current_user.id, scope: {user_id: current_user.id}).as_json, klass: 'Task'}, status: :ok
+    if is_valid?(@task, 'view')
+      render json: { data:  TaskSerializer.new(@task, user_id: current_user.id, scope: {user_id: current_user.id}).as_json, klass: 'Task'}, status: :ok
+    else 
+      render json: { data:  [], klass: 'Task'}, status: :ok
+    end
   end
 
   def create
     @task = Task.new(task_params)
     @task.user_id = current_user.id
     if @task.save
+      @task.append_tags
       render json: { data: TaskSerializer.new(@task).as_json, klass: 'Task' }, status: :ok
     end
   end
@@ -43,7 +55,8 @@ class V1::TasksController < ApplicationController
     @task = Task.find(params[:id])
     @task.user_id = current_user.id
     if @task.update_attributes(task_params)
-      render json: { data: TaskSerializer.new(@task, user_id: current_user.id).as_json, klass: 'Task' }, status: :ok
+      @task.append_tags
+      render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
     else
       render json: { data: @task.errors.full_messages  }, status: :ok
     end
@@ -55,6 +68,7 @@ class V1::TasksController < ApplicationController
       render json: { data: 'OK'}, status: :ok
     end
   end
+
 
   def task_params
     params.require(:task).permit!

@@ -13,10 +13,14 @@ Rails.application.routes.draw do
     post '/tasks/participants', to: 'tasks#add_participants'
     get '/tasks/participants/delete', to: 'tasks#remove_participants'
     post '/tasks/status', to: 'tasks#change_status'
+    post '/tasks/change_role', to: 'tasks#change_role'
 
+    
     post '/works/participants', to: 'works#add_participants'
     get '/works/participants/delete', to: 'works#remove_participants'
     post '/works/status', to: 'works#change_status'
+    post '/works/change_role', to: 'works#change_role'
+
 
     get '/comments/delete', to: 'comments#destroy'
     post '/roles/abilities', to: 'roles#abilities'
@@ -26,6 +30,7 @@ Rails.application.routes.draw do
     
     get '/reports/search', to: 'reports#search'
     get '/tags/search', to: 'tags#search'
+    
 
     resources :profiles
     resources :roles
@@ -43,6 +48,7 @@ Rails.application.routes.draw do
     post '/users/assignments', to: 'users#assignments'
     get '/users/assignments/delete', to: 'users#delete_assignment'
     post '/users/login', to: 'users#login'
+    post '/users/verify', to: 'users#verify'
     post '/users/sign_up', to: 'users#sign_up'
 
   end

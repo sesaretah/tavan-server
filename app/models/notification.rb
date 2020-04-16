@@ -14,7 +14,7 @@ class Notification < ApplicationRecord
     def notify_by_mail
 
         for target_user_id in self.target_user_ids
-            NotificationsMailer.notify_email(target_user_id, self.notification_type, self.user.profile.fullname, self.notifiable.title).deliver_later
+            NotificationsMailer.notify_email(target_user_id, self.notification_type, self.user.profile.fullname, self.notifiable.title, self.custom_text).deliver_later
         end
     end
 

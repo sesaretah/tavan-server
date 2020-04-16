@@ -4,24 +4,25 @@ class TaskSerializer < ActiveModel::Serializer
              :created_at, :coworkers, :works, :discussions, :participants, 
              :status, :start_date_j, :deadline_date_j, :start_time, 
              :deadline_time, :works, :reports, :the_comments, :the_tags,
-             :is_public, :report_alert, :comment_alert, :deadline_alert
+             :is_public, :report_alert, :comment_alert, :deadline_alert,
+             :user_access
 
 
   
   def works
-  # result = []
-  #  for work in object.works 
-  #    if work.status
-  #      status = {title: work.status.title, color: work.status.color} 
-  #    else 
-  #      status = nil
-  #    end
-  #    result << {id: work.id, title: work.title, details: work.details, status: status}
-  #  end
-   # return result
    if scope && scope[:user_id]
-    ActiveModel::SerializableResource.new(object.works, scope:{user_id: scope[:user_id]} ,each_serializer: WorkSerializer ).as_json
+    ActiveModel::SerializableResource.new(object.works.order('deadline DESC'), scope:{user_id: scope[:user_id]} ,each_serializer: WorkSerializer ).as_json
    end
+  end
+
+  def user_access
+    access = []
+    if scope && scope[:user_id]
+      user = User.find(scope[:user_id])
+      role = object.user_role(user)
+      access = object.access(role)
+    end
+    return access
   end
 
   def is_public
@@ -70,8 +71,8 @@ class TaskSerializer < ActiveModel::Serializer
     result = []
     if !object.participants.blank?
       object.participants.each do |participant|
-        @profile = Profile.find_by_id(participant)
-        result << ProfileSerializer.new(@profile).as_json if !@profile.blank?
+        profile = Profile.find_by_id(participant['user_id'])
+        result << {profile: ProfileSerializer.new(profile).as_json, role: participant['role']}if !profile.blank?
       end
     end
     return result
@@ -90,11 +91,11 @@ class TaskSerializer < ActiveModel::Serializer
   end
 
   def start_date_j
-    JalaliDate.new(object.start).to_s + ' ' + object.start.in_time_zone("Tehran").strftime("%H:%M") if object.start
+    
   end
 
   def deadline_date_j
-    JalaliDate.new(object.deadline).to_s + ' ' + object.deadline.in_time_zone("Tehran").strftime("%H:%M") if object.deadline
+    
   end
 
   def deadline_date
