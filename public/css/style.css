@@ -2,19 +2,19 @@
 
   @font-face {
       font-family: Tanha;
-      src: url('http://fonts.codearena.ir/rastikerdar/tanha/tanha.eot');
-      src: url('http://fonts.codearena.ir/rastikerdar/tanha/tanha.eot?#iefix') format('embedded-opentype'),
-           url('http://fonts.codearena.ir/rastikerdar/tanha/tanha.woff') format('woff'),
-           url('http://fonts.codearena.ir/rastikerdar/tanha/tanha.ttf') format('truetype');
+      src: url('../fonts/tanha.eot');
+      src: url('../fonts/tanhaie.eot') format('embedded-opentype'),
+           url('../fonts/tanha/tanha.woff') format('woff'),
+           url('../fonts/tanha.ttf') format('truetype');
       font-weight: normal;
     }
 
   @font-face {
       font-family: Samim;
-      src: url('http://fonts.codearena.ir/rastikerdar/samim/samim.eot');
-      src: url('http://fonts.codearena.ir/rastikerdar/samim/samim.eot?#iefix') format('embedded-opentype'),
-           url('http://fonts.codearena.ir/rastikerdar/samim/samim.woff') format('woff'),
-           url('http://fonts.codearena.ir/rastikerdar/samim/samim.ttf') format('truetype');
+      src: url('../fonts/samim.eot');
+      src: url('../fonts/samimie.eot') format('embedded-opentype'),
+           url('../fonts/samim.woff') format('woff'),
+           url('../fonts/samim.ttf') format('truetype');
       font-weight: normal;
     }  
 body {

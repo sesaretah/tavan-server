@@ -18,8 +18,6 @@ class ProfileSerializer < ActiveModel::Serializer
   
   def metas
     result = []
-    #object.user.actuals.group_by(&:meta_id).each do |meta_id, actuals|
-    #  meta = Meta.find(meta_id)
     for meta in Meta.all
       result << {meta: MetaSerializer.new(meta).as_json, actuals: ActiveModel::SerializableResource.new(meta.actuals,  each_serializer: ActualSerializer ).as_json}
     end
