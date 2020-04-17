@@ -52,4 +52,6 @@ Rails.application.routes.draw do
     post '/users/sign_up', to: 'users#sign_up'
 
   end
+  get '/', to: redirect('/landing/index.html'), :as => :root
+  get '/app', to: redirect('/app.html')
 end
