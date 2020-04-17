@@ -28,7 +28,7 @@ class V1::UsersController < ApplicationController
     password = SecureRandom.hex(6)
     @user = User.create(email: params['email'], password: password, password_confirmation: password, last_login: DateTime.now)
     if @user
-      Profile.create(name: params['name'], surename: params['surename'], faculty: params['faculty'], user_id: @user.id)
+      Profile.create(name: params['name'], surename: params['surename'], user_id: @user.id)
       @user.notify_user
     end
     #render :json => {data: {result: 'OK'}, klass: 'User'}.to_json , :callback => params['callback']
