@@ -2,8 +2,8 @@ class V1::WorksController < ApplicationController
   before_action :record_visit, only: [:show]
   
   def index
-    works = Work.order('deadline DESC').all
-    render json: { data: ActiveModel::SerializableResource.new(works, user_id: current_user.id,  each_serializer: WorkSerializer ).as_json, klass: 'Work' }, status: :ok
+    works = Work.newest_works(current_user)
+    render json: { data: ActiveModel::SerializableResource.new(works, scope: {user_id: current_user.id},  each_serializer: WorkSerializer ).as_json, klass: 'Work' }, status: :ok
   end
 
   def change_role

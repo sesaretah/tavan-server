@@ -30,6 +30,18 @@ class Work < ApplicationRecord
         return role
     end
 
+    def self.user_works(user)# not goog append works to user on add
+        arr = []
+        for work in Work.all
+            arr << work.id if work.participant_exists?(user.id)
+        end
+        return arr
+    end
+
+    def self.newest_works(user)
+        self.where("id in (?)", user_works(user)).order('updated_at DESC')
+    end
+
 
     def access(role)
         case role

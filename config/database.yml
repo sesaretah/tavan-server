@@ -29,8 +29,8 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: upm_test
+  database: tavan_test
 
 production:
   <<: *default
-  database: upm_prod
+  database: tavan_prod
