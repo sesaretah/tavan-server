@@ -5,7 +5,7 @@ class ProfileSerializer < ActiveModel::Serializer
   belongs_to :user
 
   def last_login
-    object.user.last_sign_in_at
+    #object.user.last_sign_in_at
   end
 
   def bio
