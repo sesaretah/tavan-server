@@ -12,13 +12,13 @@ class V1::UsersController < ApplicationController
   def login
       @user = User.find_by_email(params['email'])
       @user.notify_user if @user
-      #render :json => {data: {result: 'OK'}, klass: 'User'}.to_json , :callback => params['callback']
+      render :json => {data: {result: 'OK'}, klass: 'Login'}.to_json , :callback => params['callback']
   end
 
   def verify
     user = User.verify(params['verification_code'])
     if !user.blank?
-      render :json => {data: {result: 'OK', token: JWTWrapper.encode({ user_id: user.id }), user_id: user.id}, klass: 'User'}.to_json , :callback => params['callback']
+      render :json => {data: {result: 'OK', token: JWTWrapper.encode({ user_id: user.id }), user_id: user.id}, klass: 'Verify'}.to_json , :callback => params['callback']
     else
       render :json => {result: 'ERROR',  error: I18n.t(:doesnt_match) }.to_json , status: :unprocessable_entity
     end
@@ -31,7 +31,7 @@ class V1::UsersController < ApplicationController
       Profile.create(name: params['name'], surename: params['surename'], user_id: @user.id)
       @user.notify_user
     end
-    #render :json => {data: {result: 'OK'}, klass: 'User'}.to_json , :callback => params['callback']
+    render :json => {data: {result: 'OK'}, klass: 'SignUp'}.to_json , :callback => params['callback']
   end
 
 
