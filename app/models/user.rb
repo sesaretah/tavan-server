@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_many :statuses
   has_many :tags
   has_many :notifications
+  has_many :todos
+  
 
   def assign(role_id)
     self.assignments = [] if self.assignments.blank?

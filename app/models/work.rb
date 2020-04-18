@@ -3,6 +3,7 @@ class Work < ApplicationRecord
     belongs_to :task
     belongs_to :status, optional: true
     has_many :reports, :dependent => :destroy
+    has_many :todos, :dependent => :destroy
     after_create :notify_by_mail
     before_create :set_participants
 
@@ -46,9 +47,9 @@ class Work < ApplicationRecord
     def access(role)
         case role
         when 'Creator'
-            return ['edit','reports', 'comments', 'statuses', 'view', 'participants']
+            return ['edit','reports', 'comments', 'statuses', 'view', 'participants', 'todos']
         when 'Admin'
-            return ['reports', 'comments', 'statuses', 'view', 'participants']
+            return ['reports', 'comments', 'statuses', 'view', 'participants', 'todos']
         when 'Colleague'
             return ['comments', 'statuses', 'view']
         when 'Observer'

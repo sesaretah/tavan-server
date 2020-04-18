@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  work_id: 1
+  participants: 
+  is_done: false
+
+two:
+  title: MyString
+  work_id: 1
+  participants: 
+  is_done: false
