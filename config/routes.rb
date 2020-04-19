@@ -21,7 +21,8 @@ Rails.application.routes.draw do
     post '/works/status', to: 'works#change_status'
     post '/works/change_role', to: 'works#change_role'
 
-
+    post '/todos/check_todo', to: 'todos#check_todo'
+    
     get '/comments/delete', to: 'comments#destroy'
     post '/roles/abilities', to: 'roles#abilities'
     get '/roles/abilities/delete', to: 'roles#remove_ability'
@@ -44,6 +45,7 @@ Rails.application.routes.draw do
     resources :uploads
     resources :comments
     resources :tags
+    resources :todos
 
     post '/users/assignments', to: 'users#assignments'
     get '/users/assignments/delete', to: 'users#delete_assignment'

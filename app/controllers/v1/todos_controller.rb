@@ -1,8 +1,16 @@
-class V1::TodoesController < ApplicationController
+class V1::TodosController < ApplicationController
 
   def index
     todos = Todo.all.order('title DESC')
     render json: { data: ActiveModel::SerializableResource.new(todos, user_id: current_user.id,  each_serializer: TodoSerializer ).as_json, klass: 'Todo' }, status: :ok
+  end
+
+  def check_todo
+    @todo = Todo.find(params[:id])
+    @todo.is_done = params[:is_done]
+    if @todo.save
+      render json: { data: WorkSerializer.new(@todo.work, scope: {user_id: current_user.id}).as_json, klass: 'Work' }, status: :ok
+    end
   end
 
   def search
@@ -20,16 +28,18 @@ class V1::TodoesController < ApplicationController
   end
 
   def create
-    @todo = Todo.new(status_params)
+    @todo = Todo.new(todo_params)
     @todo.user_id = current_user.id
     if @todo.save
-      render json: { data: TodoSerializer.new(@status).as_json, klass: 'Todo' }, status: :ok
+      @todo.add_participants(params[:participants])
+      render json: { data: TodoSerializer.new(@todo).as_json, klass: 'Todo' }, status: :ok
     end
   end
 
   def update
     @todo = Todo.find(params[:id])
-    if @todo.update_attributes(status_params)
+    if @todo.update_attributes(todo_params)
+      @todo.add_participants(params[:participants])
       render json: { data: TodoSerializer.new(@todo, user_id: current_user.id).as_json, klass: 'Todo' }, status: :ok
     else
       render json: { data: @todo.errors.full_messages  }, status: :ok

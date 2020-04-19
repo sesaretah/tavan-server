@@ -4,10 +4,14 @@ class WorkSerializer < ActiveModel::Serializer
              :participants, :status, 
              :start_date_j, :deadline_date_j, :start_time, :deadline_time,
              :task, :reports, :the_comments, :report_alert, :comment_alert,
-            :deadline_alert, :user_access
+            :deadline_alert, :user_access, :the_todos
 
   def task
     object.task
+  end
+
+  def the_todos
+    ActiveModel::SerializableResource.new(object.todos.order('created_at DESC'),  each_serializer: TodoSerializer ).as_json
   end
 
   def participants
