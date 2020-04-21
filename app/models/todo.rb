@@ -47,6 +47,17 @@ class Todo < ApplicationRecord
         return arr.uniq
     end
 
+    def access(role)
+        case role
+        when 'Creator'
+            return ['edit','view']
+        when 'Observer'
+            ['view']
+        when nil
+            []
+        end
+    end
+
     def create_notification(type, profile)
         Notification.create(
             notifiable_id: self.id, notifiable_type: 'Todo', 

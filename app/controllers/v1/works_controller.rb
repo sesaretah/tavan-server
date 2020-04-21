@@ -1,5 +1,5 @@
 class V1::WorksController < ApplicationController
-  before_action :record_visit, only: [:show]
+  before_action :record_visit, only: [:show, :add_participants, :change_role,:change_status, :remove_participants]
   
   def index
     works = Work.newest_works(current_user)
@@ -54,8 +54,9 @@ class V1::WorksController < ApplicationController
   def update
     @work = Work.find(params[:id])
     @work.user_id = current_user.id
-    @work.append_time(params)
-    if is_valid?(@work.task , 'works') && @work.save
+    if is_valid?(@work.task , 'works') && @work.update_attributes(work_params)
+      @work.append_time(params)
+      @work.save
       render json: { data: WorkSerializer.new(@work, scope: {user_id: current_user.id}).as_json, klass: 'Work' }, status: :ok
     else
       render json: { data: @work.errors.full_messages  }, status: :ok
@@ -64,7 +65,7 @@ class V1::WorksController < ApplicationController
 
   def destroy
     @work = Work.find(params[:id])
-    if @work.destroy
+    if is_valid?(@work, 'edit') &&  @work.destroy
       render json: { data: 'OK'}, status: :ok
     end
   end

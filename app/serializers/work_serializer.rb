@@ -1,7 +1,7 @@
 class WorkSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
   attributes :id, :title, :details, :start_date, :deadline_date, :created_at, 
-             :participants, :status, 
+             :the_participants, :status, 
              :start_date_j, :deadline_date_j, :start_time, :deadline_time,
              :task, :reports, :the_comments, :report_alert, :comment_alert,
             :deadline_alert, :user_access, :the_todos
@@ -14,11 +14,12 @@ class WorkSerializer < ActiveModel::Serializer
     ActiveModel::SerializableResource.new(object.todos.order('created_at DESC'),  each_serializer: TodoSerializer ).as_json
   end
 
-  def participants
+  def the_participants
     result = []
     if !object.participants.blank?
       object.participants.each do |participant|
-        profile = Profile.find_by_id(participant['user_id'])
+        p participant['user_id']
+        profile = Profile.where(user_id: participant['user_id']).first
         result << {profile: ProfileSerializer.new(profile).as_json, role: participant['role']}if !profile.blank?
       end
     end

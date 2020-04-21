@@ -1,5 +1,5 @@
 class V1::TasksController < ApplicationController
-  before_action :record_visit, only: [:show]
+  before_action :record_visit, only: [:show, :add_participants, :change_role,:change_status, :remove_participants]
   
   def index
     params['order'] == 'title' ? tasks = Task.order_by_title_for_user(current_user)  : tasks = Task.order_by_deadline_for_user(current_user) 
@@ -63,7 +63,7 @@ class V1::TasksController < ApplicationController
 
   def destroy
     @task = Task.find(params[:id])
-    if @task.destroy
+    if is_valid?(@task, 'edit') && @task.destroy
       render json: { data: 'OK'}, status: :ok
     end
   end

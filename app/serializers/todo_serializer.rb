@@ -14,7 +14,7 @@ class TodoSerializer < ActiveModel::Serializer
     result = []
     if !object.participants.blank?
       object.participants.each do |participant|
-        profile = Profile.find_by_id(participant['user_id'])
+        profile = Profile.where(user_id: participant['user_id']).first
         result << {profile: ProfileSerializer.new(profile).as_json, role: participant['role']}if !profile.blank?
       end
     end
@@ -25,7 +25,7 @@ class TodoSerializer < ActiveModel::Serializer
     result = []
     if !object.work.blank? && !object.work.participants.blank?
       object.work.participants.each do |participant|
-        profile = Profile.find_by_id(participant['user_id'])
+        profile = Profile.where(user_id: participant['user_id']).first
         check = object.participant_exists?(participant['user_id'])
         result << {profile: ProfileSerializer.new(profile).as_json, check: check}if !profile.blank?
       end
@@ -37,7 +37,7 @@ class TodoSerializer < ActiveModel::Serializer
     result = []
     if !object.participants.blank?
       object.participants.each do |participant|
-        profile = Profile.find_by_id(participant['user_id'])
+        profile = Profile.where(user_id: participant['user_id']).first
         result << {fullname: profile.fullname, id: profile.id}if !profile.blank?
       end
     end

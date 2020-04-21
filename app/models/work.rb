@@ -135,14 +135,14 @@ class Work < ApplicationRecord
     def append_time(params)
         start_time = params['start_time'].split(':')
         deadline_time = params['deadline_time'].split(':')
-        self.start = params['start'].to_datetime.change({ hour: start_time[0].to_i, min: start_time[1].to_i, sec: 0 }).asctime.in_time_zone("Tehran")
-        p params['start'].to_datetime
-        p params['start'].to_datetime.change({ hour: start_time[0].to_i, min: start_time[1].to_i, sec: 0 })
-        p self.start
-        self.deadline = params['deadline'].to_datetime.change({ hour: deadline_time[0].to_i, min: deadline_time[1].to_i, sec: 0 }).asctime.in_time_zone("Tehran") 
-        p params['deadline'].to_datetime
-        p params['deadline'].to_datetime.change({ hour: deadline_time[0].to_i, min: deadline_time[1].to_i, sec: 0 })
-        p self.deadline   
+        self.start = params['start'].to_datetime.in_time_zone("Tehran").change({ hour: start_time[0].to_i, min: start_time[1].to_i, sec: 0 }).asctime.in_time_zone("Tehran")
+       # p params['start'].to_datetime
+        #p params['start'].to_datetime.change({ hour: start_time[0].to_i, min: start_time[1].to_i, sec: 0 })
+       # p self.start
+        self.deadline = params['deadline'].to_datetime.in_time_zone("Tehran").change({ hour: deadline_time[0].to_i, min: deadline_time[1].to_i, sec: 0 }).asctime.in_time_zone("Tehran") 
+       # p params['deadline'].to_datetime.in_time_zone("Tehran")
+        #p params['deadline'].to_datetime.in_time_zone("Tehran").change({ hour: deadline_time[0].to_i, min: deadline_time[1].to_i, sec: 0 })
+        #p self.deadline   
     end
 
     def comments 

@@ -1,5 +1,4 @@
 class TaskSerializer < ActiveModel::Serializer
-  include Rails.application.routes.url_helpers
   attributes :id, :title, :details, :start_date, :deadline_date, 
              :created_at, :coworkers, :works, :discussions, :participants, 
              :status, :start_date_j, :deadline_date_j, :start_time, 
@@ -55,7 +54,7 @@ class TaskSerializer < ActiveModel::Serializer
   end
 
   def the_comments
-    ActiveModel::SerializableResource.new(object.comments,  each_serializer: CommentSerializer ).as_json
+    ActiveModel::SerializableResource.new(object.comments,  each_serializer: CommentSerializer, scope: {user_id: scope[:user_id]} ).as_json
   end
 
   def the_tags
@@ -71,7 +70,7 @@ class TaskSerializer < ActiveModel::Serializer
     result = []
     if !object.participants.blank?
       object.participants.each do |participant|
-        profile = Profile.find_by_id(participant['user_id'])
+        profile = Profile.where(user_id: participant['user_id']).first
         result << {profile: ProfileSerializer.new(profile).as_json, role: participant['role']}if !profile.blank?
       end
     end

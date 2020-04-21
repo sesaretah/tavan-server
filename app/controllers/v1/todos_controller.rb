@@ -48,8 +48,9 @@ class V1::TodosController < ApplicationController
 
   def destroy
     @todo = Todo.find(params[:id])
-    if @todo.destroy
-      render json: { data: 'OK'}, status: :ok
+    @work = @todo.work
+    if is_valid?(@todo, 'edit') && @todo.destroy
+      render json: { data:  WorkSerializer.new(@work, scope: {user_id: current_user.id}).as_json, klass: 'Work'}, status: :ok
     end
   end
 
