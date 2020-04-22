@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  morning_report: MyText
+  afternoon_report: MyText
+  extra_report: MyText
+  associations: 
+  recipients: 
+  sheet_date: 2020-04-23
+
+two:
+  user_id: 1
+  morning_report: MyText
+  afternoon_report: MyText
+  extra_report: MyText
+  associations: 
+  recipients: 
+  sheet_date: 2020-04-23

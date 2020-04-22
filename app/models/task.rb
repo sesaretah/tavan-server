@@ -28,9 +28,11 @@ class Task < ApplicationRecord
         when 'Creator'
             return ['edit','works','reports', 'comments', 'statuses', 'view', 'participants']
         when 'Admin'
-            return ['works','reports', 'comments', 'statuses', 'view', 'participants']
+            return ['works','reports', 'comments', 'view', 'participants']
         when 'Colleague'
-            return ['comments', 'statuses', 'view']
+            return ['comments', 'view']
+        when 'Confirmer'
+            ['view','statuses']
         when 'Observer'
             ['view']
         when nil

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_21_175949) do
+ActiveRecord::Schema.define(version: 2020_04_22_193202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,6 +139,18 @@ ActiveRecord::Schema.define(version: 2020_04_21_175949) do
     t.integer "status_id"
     t.boolean "public"
     t.json "tags"
+  end
+
+  create_table "time_sheets", force: :cascade do |t|
+    t.integer "user_id"
+    t.text "morning_report"
+    t.text "afternoon_report"
+    t.text "extra_report"
+    t.json "associations"
+    t.json "recipients"
+    t.date "sheet_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "todos", force: :cascade do |t|

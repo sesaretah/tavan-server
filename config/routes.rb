@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     resources :comments
     resources :tags
     resources :todos
+    resources :time_sheets
 
     post '/users/assignments', to: 'users#assignments'
     get '/users/assignments/delete', to: 'users#delete_assignment'

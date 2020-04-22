@@ -13,8 +13,8 @@ class Work < ApplicationRecord
         for participant in self.task.participants
             if participant['user_id'] == self.user_id
                 participant['role'] = 'Creator'
+                arr << participant
             end
-            arr << participant
         end
         self.participants = arr
     end
@@ -49,9 +49,11 @@ class Work < ApplicationRecord
         when 'Creator'
             return ['edit','reports', 'comments', 'statuses', 'view', 'participants', 'todos']
         when 'Admin'
-            return ['reports', 'comments', 'statuses', 'view', 'participants', 'todos']
+            return ['reports', 'comments', 'statuses', 'view', 'participants']
         when 'Colleague'
-            return ['comments', 'statuses', 'view']
+            return ['comments', 'view']
+        when 'Confirmer'
+            ['statuses', 'view', 'todos']
         when 'Observer'
             ['view']
         when nil
