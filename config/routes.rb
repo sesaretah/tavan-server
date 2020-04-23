@@ -10,31 +10,36 @@ Rails.application.routes.draw do
     post '/profiles/add_experties/:id', to: 'profiles#add_experties'
     post '/profiles/remove_experties/:id', to: 'profiles#remove_experties'
 
-    post '/tasks/participants', to: 'tasks#add_participants'
-    get '/tasks/participants/delete', to: 'tasks#remove_participants'
+    post '/tasks/involvements', to: 'tasks#add_involvements'
+    get '/tasks/involvements/delete', to: 'tasks#remove_involvements'
     post '/tasks/status', to: 'tasks#change_status'
     post '/tasks/change_role', to: 'tasks#change_role'
     get '/tasks/delete', to: 'tasks#destroy'
 
-    
-    post '/works/participants', to: 'works#add_participants'
-    get '/works/participants/delete', to: 'works#remove_participants'
+    post '/works/involvements', to: 'works#add_involvements'
+    get '/works/involvements/delete', to: 'works#remove_involvements'
+
     post '/works/status', to: 'works#change_status'
     post '/works/change_role', to: 'works#change_role'
     get '/works/delete', to: 'works#destroy'
 
     post '/todos/check_todo', to: 'todos#check_todo'
+    get '/todos/delete', to: 'todos#destroy'
     
     get '/comments/delete', to: 'comments#destroy'
     post '/roles/abilities', to: 'roles#abilities'
+
     get '/roles/abilities/delete', to: 'roles#remove_ability'
 
     get '/statuses/search', to: 'statuses#search'
     
     get '/reports/search', to: 'reports#search'
-    get '/tags/search', to: 'tags#search'
 
-    get '/todos/delete', to: 'todos#destroy'
+    get '/tags/search', to: 'tags#search'
+    
+    get '/time_sheets/search_ass', to: 'time_sheets#search_associations'
+
+    
     
 
     resources :profiles

@@ -1,5 +1,5 @@
 class V1::WorksController < ApplicationController
-  before_action :record_visit, only: [:show, :add_participants, :change_role,:change_status, :remove_participants]
+  before_action :record_visit, only: [:show, :add_involvements, :change_role,:change_status, :remove_involvements]
   
   def index
     works = Work.newest_works(current_user)
@@ -8,14 +8,14 @@ class V1::WorksController < ApplicationController
 
   def change_role
     @work = Work.find(params[:id])
-    @work.change_role(params[:profile_id], params[:role]) if is_valid?(@work , 'participants')
+    @work.change_role(params[:profile_id], params[:role]) if is_valid?(@work , 'involvements')
     render json: { data: WorkSerializer.new(@work, scope: {user_id: current_user.id} ).as_json, klass: 'Work' }, status: :ok
   end
 
 
-  def add_participants
+  def add_involvements
     @work = Work.find(params[:id])
-    @work.add_participant(params[:profile_id]) if is_valid?(@work , 'participants')
+    @work.add_involvement(params[:profile_id]) if is_valid?(@work , 'involvements')
     render json: { data: WorkSerializer.new(@work, scope: {user_id: current_user.id}).as_json, klass: 'Work' }, status: :ok
   end
 
@@ -26,9 +26,9 @@ class V1::WorksController < ApplicationController
     render json: { data: WorkSerializer.new(@work, scope: {user_id: current_user.id}).as_json, klass: 'Work' }, status: :ok
   end
 
-  def remove_participants
+  def remove_involvements
     @work = Work.find(params[:id])
-    @work.remove_participant(params[:profile_id]) if is_valid?(@work , 'participants')
+    @work.remove_involvement(params[:profile_id]) if is_valid?(@work , 'involvements')
     render json: { data: WorkSerializer.new(@work, scope: {user_id: current_user.id}).as_json, klass: 'Work' }, status: :ok
   end
 

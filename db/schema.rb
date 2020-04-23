@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_22_193202) do
+ActiveRecord::Schema.define(version: 2020_04_23_123332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,17 @@ ActiveRecord::Schema.define(version: 2020_04_22_193202) do
     t.string "commentable_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "involvements", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "involveable_id"
+    t.string "involoveable_type"
+    t.string "status"
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "involveable_type"
   end
 
   create_table "meta", force: :cascade do |t|

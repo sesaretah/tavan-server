@@ -14,4 +14,6 @@ class ApplicationController < ActionController::API
         Visit.create(user_id: current_user.id, visitable_id: params[:id], visitable_type: controller.classify, visitable_action:  params[:action], the_params: params) if controller
     end
 
+    
+
 end

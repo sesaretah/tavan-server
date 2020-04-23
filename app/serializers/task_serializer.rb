@@ -4,7 +4,7 @@ class TaskSerializer < ActiveModel::Serializer
              :status, :start_date_j, :deadline_date_j, :start_time, 
              :deadline_time, :works, :reports, :the_comments, :the_tags,
              :is_public, :report_alert, :comment_alert, :deadline_alert,
-             :user_access
+             :user_access, :the_involvements
 
 
   
@@ -72,6 +72,17 @@ class TaskSerializer < ActiveModel::Serializer
       object.participants.each do |participant|
         profile = Profile.where(user_id: participant['user_id']).first
         result << {profile: ProfileSerializer.new(profile).as_json, role: participant['role']}if !profile.blank?
+      end
+    end
+    return result
+  end 
+
+  def the_involvements
+    result = []
+    if !object.involvements.blank?
+      object.involvements.each do |involvement|
+        profile = involvement.user.profile
+        result << {profile: ProfileSerializer.new(profile).as_json, role: involvement.role}if !profile.blank?
       end
     end
     return result

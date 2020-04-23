@@ -1,5 +1,5 @@
 class V1::TasksController < ApplicationController
-  before_action :record_visit, only: [:show, :add_participants, :change_role,:change_status, :remove_participants]
+  before_action :record_visit, only: [:show, :add_involvements, :change_role,:change_status, :remove_involvements]
   
   def index
     params['order'] == 'title' ? tasks = Task.order_by_title_for_user(current_user)  : tasks = Task.order_by_deadline_for_user(current_user) 
@@ -8,13 +8,13 @@ class V1::TasksController < ApplicationController
 
   def change_role
     @task = Task.find(params[:id])
-    @task.change_role(params[:profile_id], params[:role]) if is_valid?(@task , 'participants')
+    @task.change_role(params[:profile_id], params[:role]) if is_valid?(@task , 'involvements')
     render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 
-  def add_participants
+  def add_involvements
     @task = Task.find(params[:id])
-    @task.add_participant(params[:profile_id]) if is_valid?(@task , 'participants')
+    @task.add_involvement(params[:profile_id]) if is_valid?(@task , 'involvements')
     render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 
@@ -25,9 +25,9 @@ class V1::TasksController < ApplicationController
     render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 
-  def remove_participants
+  def remove_involvements
     @task = Task.find(params[:id])
-    @task.remove_participant(params[:profile_id]) if is_valid?(@task, 'participants', )
+    @task.remove_involvement(params[:profile_id]) if is_valid?(@task, 'involvements', )
     render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 
@@ -46,7 +46,7 @@ class V1::TasksController < ApplicationController
     @task.user_id = current_user.id
     if @task.save
       @task.append_tags
-      render json: { data: TaskSerializer.new(@task).as_json, klass: 'Task' }, status: :ok
+      render json: { data: TaskSerializer.new(@task , scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
     end
   end
 
