@@ -7,9 +7,9 @@ class Report < ApplicationRecord
 
     def notify_by_mail
         if !self.work_id.blank?
-            Notification.create(notifiable_id: self.work.id, notifiable_type: 'Work', notification_type: 'Report', source_user_id: self.user_id, target_user_ids: self.owners , seen: false)
+            Notification.create(notifiable_id: self.work.id, notifiable_type: 'Work', notification_type: 'Report', source_user_id: self.user_id, target_user_ids: self.owners , seen: false, custom_text: self.title)
         else 
-            Notification.create(notifiable_id: self.task.id, notifiable_type: 'Task', notification_type: 'Report', source_user_id: self.user_id, target_user_ids: self.owners , seen: false)
+            Notification.create(notifiable_id: self.task.id, notifiable_type: 'Task', notification_type: 'Report', source_user_id: self.user_id, target_user_ids: self.owners , seen: false, custom_text: self.title)
         end
     end
 

@@ -12,7 +12,7 @@ class Comment < ApplicationRecord
     end
 
     def notify_by_mail
-        Notification.create(notifiable_id: self.commentable_id, notifiable_type: self.commentable_type, notification_type: 'Comment', source_user_id: self.user_id, target_user_ids: self.owners , seen: false)
+        Notification.create(notifiable_id: self.commentable_id, notifiable_type: self.commentable_type, notification_type: 'Comment', source_user_id: self.user_id, target_user_ids: self.owners , seen: false, custom_text: self.content)
     end
 
 

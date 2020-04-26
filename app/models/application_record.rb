@@ -37,7 +37,7 @@ class ApplicationRecord < ActiveRecord::Base
 
 
   def owners
-    self.involvements.pluck(:user_id)
+    self.involvements.pluck(:user_id).uniq
   end
 
 

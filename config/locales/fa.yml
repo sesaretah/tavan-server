@@ -1,6 +1,7 @@
 fa:
   work_notification: 'کاری ایجاد شد'
   comment_notification: 'نظر داده شد'
+  todo_notification: 'تقسیم کار ایجاد شد'
   inside: 'در'
   report_notification: 'گزارشی ارسال شد'
   add_participant: 'اضافه شد'
@@ -17,4 +18,13 @@ fa:
   work: 'کار'
   task: 'وظیفه'
   todo: 'تقسیم کار'
+  hello: 'باسلام،'
+  new_comment_on: 'نظر جدید بر روی'
+  email_footer: 'این ایمیل جهت اطلاع رسانی توسط سامانه توان ارسال شده است.'
+  email_thanks: 'با سپاس'
+  new_work: 'کار جدید'
+  inside: 'در'
+  user: 'کاربر'
+  new_report: 'گزارشی جدید'
+  new_todo: 'تقسیم کار جدید'
   

@@ -6,8 +6,8 @@ class Work < ApplicationRecord
     has_many :reports, :dependent => :destroy
     has_many :todos, :dependent => :destroy
     has_many :involvements, :as => :involveable, :dependent => :destroy
-    after_create :notify_by_mail
     after_create :add_admin
+    after_create :notify_by_mail
 
     def self.user_works(user)
         self.joins(:involvements).where("involvements.involveable_type = ? AND involvements.user_id = ?", 'Work', user.id)
@@ -38,11 +38,11 @@ class Work < ApplicationRecord
 
 
     def notify_by_mail
-        Notification.create(notifiable_id: self.task.id, notifiable_type: 'Task', notification_type: 'Work', source_user_id: self.user_id, target_user_ids: self.owners , seen: false)
+        Notification.create(notifiable_id: self.task.id, notifiable_type: 'Task', notification_type: 'Work', source_user_id: self.user_id, target_user_ids: self.owners , seen: false, custom_text: self.title)
     end
 
-    def owner
-        self.task.user if self.task
+    def owners
+        self.task.involvements.pluck(:user_id).uniq
     end
 
 

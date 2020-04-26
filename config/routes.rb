@@ -38,6 +38,8 @@ Rails.application.routes.draw do
     get '/tags/search', to: 'tags#search'
     
     get '/time_sheets/search_ass', to: 'time_sheets#search_associations'
+    get '/time_sheets/mine', to: 'time_sheets#mine'
+    get '/time_sheets/related', to: 'time_sheets#related'
 
     
     

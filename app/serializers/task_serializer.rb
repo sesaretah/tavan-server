@@ -1,6 +1,6 @@
 class TaskSerializer < ActiveModel::Serializer
   attributes :id, :title, :details, :start_date, :deadline_date, 
-             :created_at, :coworkers, :works, :discussions, :participants, 
+             :created_at, :coworkers, :works, :discussions, 
              :status, :start_date_j, :deadline_date_j, :start_time, 
              :deadline_time, :works, :reports, :the_comments, :the_tags,
              :is_public, :report_alert, :comment_alert, :deadline_alert,
@@ -63,19 +63,7 @@ class TaskSerializer < ActiveModel::Serializer
       result << {title: tag.title, id: tag.id}
     end
     return result
-   # ActiveModel::SerializableResource.new(object.taggings,  each_serializer: TagSerializer ).as_json
   end
-
-  def participants
-    result = []
-    if !object.participants.blank?
-      object.participants.each do |participant|
-        profile = Profile.where(user_id: participant['user_id']).first
-        result << {profile: ProfileSerializer.new(profile).as_json, role: participant['role']}if !profile.blank?
-      end
-    end
-    return result
-  end 
 
   def the_involvements
     result = []

@@ -13,7 +13,7 @@ class Involvement < ApplicationRecord
     end
 
     def rejected?
-        self.status = 'Reject' ? true : false 
+        self.status == 'Reject' ? true : false 
     end
 
     def accept!
@@ -22,7 +22,7 @@ class Involvement < ApplicationRecord
     end
 
     def accepted?
-        self.status = 'Accept' ? true : false 
+        self.status == 'Accept' ? true : false 
     end
 
     def waiting!
@@ -31,6 +31,6 @@ class Involvement < ApplicationRecord
     end
 
     def waiting?
-        self.status = 'Waiting' ? true : false 
+        self.status == 'Waiting' ? true : false 
     end
 end
