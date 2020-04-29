@@ -17,7 +17,7 @@ class Comment < ApplicationRecord
 
 
     def owners
-        self.commentable.owners
+        self.commentable.owners.uniq
     end
 
     def self.comments_since(user, obj)

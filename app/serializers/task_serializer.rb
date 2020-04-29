@@ -4,7 +4,7 @@ class TaskSerializer < ActiveModel::Serializer
              :status, :start_date_j, :deadline_date_j, :start_time, 
              :deadline_time, :works, :reports, :the_comments, :the_tags,
              :is_public, :report_alert, :comment_alert, :deadline_alert,
-             :user_access, :the_involvements
+             :user_access, :the_involvements, :archived, :archive_note
 
 
   
@@ -21,6 +21,8 @@ class TaskSerializer < ActiveModel::Serializer
       role = object.user_role(user)
       access = object.access(role)
     end
+    access = ['view'] if role != 'Creator' && object.archived
+    access = ['view', 'edit'] if role == 'Creator' && object.archived
     return access
   end
 

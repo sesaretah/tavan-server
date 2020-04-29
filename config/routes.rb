@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     resources :tags
     resources :todos
     resources :time_sheets
+    resources :devices
 
     post '/users/assignments', to: 'users#assignments'
     get '/users/assignments/delete', to: 'users#delete_assignment'

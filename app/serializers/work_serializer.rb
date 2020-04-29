@@ -3,7 +3,7 @@ class WorkSerializer < ActiveModel::Serializer
   attributes :id, :title, :details, :start_date, :deadline_date, :created_at, 
              :status, :start_date_j, :deadline_date_j, :start_time, :deadline_time,
              :task, :reports, :the_comments, :report_alert, :comment_alert,
-            :deadline_alert, :user_access, :the_todos, :the_involvements
+            :deadline_alert, :user_access, :the_todos, :the_involvements, :priority, :archived
 
   def task
     object.task
@@ -31,6 +31,8 @@ class WorkSerializer < ActiveModel::Serializer
       role = object.user_role(user)
       access = object.access(role)
     end
+    access = ['view'] if role != 'Creator' && object.archived
+    access = ['view'] if role == 'Creator' && object.archived
     return access
   end
 

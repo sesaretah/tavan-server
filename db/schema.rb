@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_23_123332) do
+ActiveRecord::Schema.define(version: 2020_04_29_205900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,13 @@ ActiveRecord::Schema.define(version: 2020_04_23_123332) do
     t.integer "parent_id"
     t.integer "commentable_id"
     t.string "commentable_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "devices", force: :cascade do |t|
+    t.integer "user_id"
+    t.text "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -150,6 +157,8 @@ ActiveRecord::Schema.define(version: 2020_04_23_123332) do
     t.integer "status_id"
     t.boolean "public"
     t.json "tags"
+    t.boolean "archived"
+    t.text "archive_note"
   end
 
   create_table "time_sheets", force: :cascade do |t|
@@ -229,6 +238,8 @@ ActiveRecord::Schema.define(version: 2020_04_23_123332) do
     t.json "participants"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "priority"
+    t.boolean "archived"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

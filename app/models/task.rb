@@ -6,7 +6,16 @@ class Task < ApplicationRecord
     has_many :reports, :dependent => :destroy
     has_many :involvements, :as => :involveable, :dependent => :destroy
     after_create :add_admin
+    after_save :archive_works
 
+    def archive_works
+        if self.archived
+            for work in self.works
+                work.archived = true
+                work.save
+            end
+        end
+    end
     def access(role)
         case role
         when 'Creator'
