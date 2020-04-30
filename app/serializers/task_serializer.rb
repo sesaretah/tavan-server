@@ -4,14 +4,20 @@ class TaskSerializer < ActiveModel::Serializer
              :status, :start_date_j, :deadline_date_j, :start_time, 
              :deadline_time, :works, :reports, :the_comments, :the_tags,
              :is_public, :report_alert, :comment_alert, :deadline_alert,
-             :user_access, :the_involvements, :archived, :archive_note
-
-
+             :user_access, :the_involvements, :archived, :archive_note,
+             :groups
   
   def works
-   if scope && scope[:user_id]
-    ActiveModel::SerializableResource.new(object.works.order('deadline DESC'), scope:{user_id: scope[:user_id]} ,each_serializer: WorkSerializer ).as_json
-   end
+     if scope && scope[:user_id]
+      ActiveModel::SerializableResource.new(object.works.order('deadline DESC'), scope:{user_id: scope[:user_id]} ,each_serializer: WorkSerializer ).as_json
+    end
+  end
+
+  def groups
+    if scope && scope[:user_id]
+      user = User.find(scope[:user_id])
+      return ActiveModel::SerializableResource.new(user.groups,  each_serializer: GroupSerializer ).as_json
+    end
   end
 
   def user_access

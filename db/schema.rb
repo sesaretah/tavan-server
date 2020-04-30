@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_29_205900) do
+ActiveRecord::Schema.define(version: 2020_04_30_194737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,14 @@ ActiveRecord::Schema.define(version: 2020_04_29_205900) do
   create_table "devices", force: :cascade do |t|
     t.integer "user_id"
     t.text "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "title"
+    t.integer "user_id"
+    t.json "grouping"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -127,6 +135,15 @@ ActiveRecord::Schema.define(version: 2020_04_29_205900) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.boolean "default_role"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.integer "user_id"
+    t.boolean "private"
+    t.json "notification_setting"
+    t.json "blocked_list"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "statuses", force: :cascade do |t|

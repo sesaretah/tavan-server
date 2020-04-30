@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
     post '/tasks/involvements', to: 'tasks#add_involvements'
     get '/tasks/involvements/delete', to: 'tasks#remove_involvements'
+    post '/tasks/group_involvements', to: 'tasks#add_group_involvements'
+    get '/tasks/group_involvements/delete', to: 'tasks#remove_group_involvements'
     post '/tasks/status', to: 'tasks#change_status'
     post '/tasks/change_role', to: 'tasks#change_role'
     get '/tasks/delete', to: 'tasks#destroy'
@@ -59,6 +61,8 @@ Rails.application.routes.draw do
     resources :todos
     resources :time_sheets
     resources :devices
+    resources :groups
+    resources :settings
 
     post '/users/assignments', to: 'users#assignments'
     get '/users/assignments/delete', to: 'users#delete_assignment'

@@ -64,6 +64,26 @@ class Task < ApplicationRecord
         self.deadline = params['deadline'].to_datetime.change({ hour: deadline_time[0].to_i, min: deadline_time[1].to_i, sec: 0 }).asctime.in_time_zone("Tehran")    
     end
 
+    def add_group_involvement(group_id)
+        group = Group.find_by_id(group_id)
+        if !group.blank? && !group.grouping.blank?
+            for item in group.grouping
+                user = User.find_by_id(item['user_id'])
+                add_involvement(user.profile.id) if user.profile
+            end
+        end
+    end
+
+    def remove_group_involvement(group_id)
+        group = Group.find_by_id(group_id)
+        if !group.blank? && !group.grouping.blank?
+            for item in group.grouping
+                user = User.find_by_id(item['user_id'])
+                remove_involvement(user.profile.id) if user.profile
+            end
+        end
+    end
+
     def append_tags
         if !self.tags.blank?
             arr = []

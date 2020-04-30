@@ -18,6 +18,12 @@ class V1::TasksController < ApplicationController
     render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 
+  def add_group_involvements
+    @task = Task.find(params[:id])
+    @task.add_group_involvement(params[:group_id]) if is_valid?(@task , 'involvements')
+    render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
+  end
+
   def change_status
     @task = Task.find(params[:id])
     @task.status_id = params[:status_id]
@@ -27,7 +33,14 @@ class V1::TasksController < ApplicationController
 
   def remove_involvements
     @task = Task.find(params[:id])
-    @task.remove_involvement(params[:profile_id]) if is_valid?(@task, 'involvements', )
+    @task.remove_involvement(params[:profile_id]) if is_valid?(@task, 'involvements')
+    render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
+  end
+
+
+  def remove_group_involvements
+    @task = Task.find(params[:id])
+    @task.remove_group_involvement(params[:group_id]) if is_valid?(@task, 'involvements')
     render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 

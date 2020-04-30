@@ -21,7 +21,7 @@ class ApplicationRecord < ActiveRecord::Base
     profile = Profile.find_by_id(profile_id)
     involvement = user_involvement(profile.user) if profile.user
     if !profile.blank? && profile.user && involvement.blank?
-        self.involvements.create(user_id: profile.user_id, role: 'Observer')
+        self.involvements.create(user_id: profile.user_id, role: 'Observer', status: 'Requested')
         create_notification('AddInvolvement', profile)
     end
   end
@@ -29,7 +29,7 @@ class ApplicationRecord < ActiveRecord::Base
   def remove_involvement(profile_id)
     profile = Profile.find_by_id(profile_id)
     involvement = user_involvement(profile.user)
-    if !profile.blank? && profile.user && involvement.blank?
+    if !profile.blank? && profile.user && !involvement.blank?
         involvement.destroy
         create_notification('RemoveInvolvement', profile)
     end
@@ -42,7 +42,7 @@ class ApplicationRecord < ActiveRecord::Base
 
 
   def add_admin
-    self.involvements.create(user_id: self.user_id, role: 'Creator')
+    self.involvements.create(user_id: self.user_id, role: 'Creator', status: 'Accepted')
   end
 
 

@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :todos
   has_many :time_sheets
   has_many :devices
+  has_many :groups
+  has_one :setting
   
 
   def assign(role_id)
