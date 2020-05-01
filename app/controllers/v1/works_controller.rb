@@ -15,7 +15,7 @@ class V1::WorksController < ApplicationController
 
   def add_involvements
     @work = Work.find(params[:id])
-    @work.add_involvement(params[:profile_id]) if is_valid?(@work , 'involvements')
+    @work.add_involvement(params[:profile_id], current_user) if is_valid?(@work , 'involvements')
     render json: { data: WorkSerializer.new(@work, scope: {user_id: current_user.id}).as_json, klass: 'Work' }, status: :ok
   end
 

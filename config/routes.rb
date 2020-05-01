@@ -45,6 +45,8 @@ Rails.application.routes.draw do
 
     post '/settings/add', to: 'settings#add'
     post '/settings/remove', to: 'settings#remove'
+    post '/settings/add_block', to: 'settings#add_block'
+    post '/settings/remove_block', to: 'settings#remove_block'
     
     
     

@@ -5,10 +5,10 @@ class Todo < ApplicationRecord
     has_many :involvements, :as => :involveable, :dependent => :destroy
     after_create :notify_by_mail
 
-    def add_involvements(involvements)
+    def add_involvements(involvements, user)
         if !involvements.blank?
             for involvement in involvements
-                add_involvement(involvement['id'])
+                add_involvement(involvement['id'], user)
             end
         end
     end

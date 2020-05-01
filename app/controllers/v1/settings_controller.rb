@@ -23,6 +23,26 @@ class V1::SettingsController < ApplicationController
       render json: { data: SettingSerializer.new(@setting).as_json, klass: 'Setting' }, status: :ok
     end
   end
+
+  def add_block
+    @setting = current_user.setting
+    @setting = Setting.new(user_id: current_user.id) if @setting.blank?
+    @setting.add_block_list(params[:profile_id])
+    if @setting.save
+      render json: { data: SettingSerializer.new(@setting).as_json, klass: 'Setting' }, status: :ok
+    end
+  end
+
+  def remove_block
+    @setting = current_user.setting
+    @setting = Setting.new(user_id: current_user.id) if @setting.blank?
+    @setting.remove_block_list(params[:profile_id])
+    if @setting.save
+      render json: { data: SettingSerializer.new(@setting).as_json, klass: 'Setting' }, status: :ok
+    end
+  end
+
+  
   
   def remove
     @setting = current_user.setting

@@ -17,10 +17,10 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
 
-  def add_involvement(profile_id)
+  def add_involvement(profile_id, user)
     profile = Profile.find_by_id(profile_id)
     involvement = user_involvement(profile.user) if profile.user
-    if !profile.blank? && profile.user && involvement.blank?
+    if !profile.blank? && profile.user && involvement.blank? && profile.user.setting && !profile.user.setting.blocked_list.include?(user.id)
         self.involvements.create(user_id: profile.user_id, role: 'Observer', status: 'Requested')
         create_notification('AddInvolvement', profile)
     end

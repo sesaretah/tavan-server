@@ -39,10 +39,10 @@ class TimeSheet < ApplicationRecord
       self.user.profile if self.user
     end
 
-    def add_involvements(involvements)
+    def add_involvements(involvements, user)
       if !involvements.blank?
           for involvement in involvements
-              add_involvement(involvement['id'])
+              add_involvement(involvement['id'], user)
           end
       end
     end

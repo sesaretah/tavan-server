@@ -69,12 +69,12 @@ class Task < ApplicationRecord
         self.deadline = params['deadline'].to_datetime.change({ hour: deadline_time[0].to_i, min: deadline_time[1].to_i, sec: 0 }).asctime.in_time_zone("Tehran")    
     end
 
-    def add_group_involvement(group_id)
+    def add_group_involvement(group_id, user)
         group = Group.find_by_id(group_id)
         if !group.blank? && !group.grouping.blank?
             for item in group.grouping
                 user = User.find_by_id(item['user_id'])
-                add_involvement(user.profile.id) if user.profile
+                add_involvement(user.profile.id, user) if user.profile
             end
         end
     end

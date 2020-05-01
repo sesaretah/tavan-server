@@ -15,16 +15,21 @@ class Notification < ApplicationRecord
 
     def notify_by_mail
         for target_user_id in self.target_user_ids.uniq
-            NotificationsMailer.notify_email(target_user_id, self.notification_type, self.user.profile.fullname, self.notifiable.title, self.custom_text).deliver_later
+            if Setting.check(target_user_id, Notification.notification_type_eql(self.notification_type, self.notifiable.class.name),'email')
+                NotificationsMailer.notify_email(target_user_id, self.notification_type, self.user.profile.fullname, self.notifiable.title, self.custom_text).deliver_later
+            end
         end
     end
 
+
     def notify_by_fcm
         for target_user_id in self.target_user_ids.uniq
-            target_user = User.find_by_id(target_user_id)
-            token = target_user.devices.last.token if target_user && target_user.devices && target_user.devices.last
-            fcm_text = fcm_text(target_user_id, self.notification_type, self.user.profile.fullname, self.notifiable.title, self.custom_text)
-            FcmJob.perform_later(fcm_text[:title], fcm_text[:body], token) if token
+            if Setting.check(target_user_id, Notification.notification_type_eql(self.notification_type, self.notifiable.class.name),'push')
+                target_user = User.find_by_id(target_user_id)
+                token = target_user.devices.last.token if target_user && target_user.devices && target_user.devices.last
+                fcm_text = fcm_text(target_user_id, self.notification_type, self.user.profile.fullname, self.notifiable.title, self.custom_text)
+                FcmJob.perform_later(fcm_text[:title], fcm_text[:body], token) if token
+            end
         end
     end
 
@@ -33,7 +38,6 @@ class Notification < ApplicationRecord
         when  'Work'
             title = "#{I18n.t(:work_notification)} #{I18n.t(:via)} #{notifier} #{I18n.t(:inside)} #{notify_text}"
             body =  "#{truncate(custom_text)}"
-           
         when  'Task'
             title = "#{I18n.t(:task_notification)}  #{I18n.t(:via)} #{notifier} #{I18n.t(:onto)} #{notify_text}" 
             body =  "#{truncate(custom_text)}"
@@ -54,7 +58,16 @@ class Notification < ApplicationRecord
             body =  "#{truncate(custom_text)}"
         end
         return {title: title, body: body}
+    end
 
+
+    def self.notification_type_eql(type, model)
+        return 'add_comments_to_'+ model.downcase.pluralize+'_' if  type == 'Comment'
+        return 'add_reports_to_'+ model.downcase.pluralize+'_' if  type == 'Report'
+        return 'add_works_to_'+ model.downcase.pluralize+'_' if  type == 'Work'
+        return 'change_status_'+ model.downcase.pluralize+'_' if  type == 'Status'
+        return 'add_involvement_to_'+ model.downcase.pluralize+'_' if type == 'AddInvolvement'
+        return 'remove_involvement_from_'+ model.downcase.pluralize+'_' if type == 'RemoveInvolvement'
     end
 
     def user

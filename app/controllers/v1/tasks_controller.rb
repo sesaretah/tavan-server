@@ -14,13 +14,13 @@ class V1::TasksController < ApplicationController
 
   def add_involvements
     @task = Task.find(params[:id])
-    @task.add_involvement(params[:profile_id]) if is_valid?(@task , 'involvements')
+    @task.add_involvement(params[:profile_id], current_user) if is_valid?(@task , 'involvements')
     render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 
   def add_group_involvements
     @task = Task.find(params[:id])
-    @task.add_group_involvement(params[:group_id]) if is_valid?(@task , 'involvements')
+    @task.add_group_involvement(params[:group_id], current_user) if is_valid?(@task , 'involvements')
     render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 

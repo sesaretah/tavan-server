@@ -31,7 +31,7 @@ class V1::TodosController < ApplicationController
     @todo = Todo.new(todo_params)
     @todo.user_id = current_user.id
     if @todo.save
-      @todo.add_involvements(params[:involvements])
+      @todo.add_involvements(params[:involvements], current_user)
       render json: { data: TodoSerializer.new(@todo).as_json, klass: 'Todo' }, status: :ok
     end
   end
@@ -39,7 +39,7 @@ class V1::TodosController < ApplicationController
   def update
     @todo = Todo.find(params[:id])
     if @todo.update_attributes(todo_params)
-      @todo.add_involvements(params[:involvements])
+      @todo.add_involvements(params[:involvements], current_user)
       render json: { data: TodoSerializer.new(@todo, user_id: current_user.id).as_json, klass: 'Todo' }, status: :ok
     else
       render json: { data: @todo.errors.full_messages  }, status: :ok

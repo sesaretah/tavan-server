@@ -41,7 +41,7 @@ class V1::TimeSheetsController < ApplicationController
     @time_sheet.user_id = current_user.id
     if @time_sheet.save
       @time_sheet.append_date(params)
-      @time_sheet.add_involvements(params[:involvements])
+      @time_sheet.add_involvements(params[:involvements], current_user)
       render json: { data: TimeSheetSerializer.new(@time_sheet, scope: {user_id: current_user.id}).as_json, klass: 'TimeSheet' }, status: :ok
     end
   end
@@ -50,7 +50,7 @@ class V1::TimeSheetsController < ApplicationController
     @time_sheet = TimeSheet.find(params[:id])
     if @time_sheet.update_attributes(time_sheet_params)
       @time_sheet.append_date(params)
-      @time_sheet.add_involvements(params[:involvements])
+      @time_sheet.add_involvements(params[:involvements], current_user)
       render json: { data: TimeSheetSerializer.new(@time_sheet, scope: {user_id: current_user.id}).as_json, klass: 'TimeSheet' }, status: :ok
     end
   end
