@@ -43,6 +43,9 @@ Rails.application.routes.draw do
     get '/time_sheets/mine', to: 'time_sheets#mine'
     get '/time_sheets/related', to: 'time_sheets#related'
 
+    post '/settings/add', to: 'settings#add'
+    post '/settings/remove', to: 'settings#remove'
+    
     
     
 

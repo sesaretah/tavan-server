@@ -15,6 +15,24 @@ class V1::SettingsController < ApplicationController
     end
   end
 
+  def add
+    @setting = current_user.setting
+    @setting = Setting.new(user_id: current_user.id) if @setting.blank?
+    @setting.add_notification_setting(params[:item])
+    if @setting.save
+      render json: { data: SettingSerializer.new(@setting).as_json, klass: 'Setting' }, status: :ok
+    end
+  end
+  
+  def remove
+    @setting = current_user.setting
+    @setting = Setting.new(user_id: current_user.id) if @setting.blank?
+    @setting.remove_notification_setting(params[:item])
+    if @setting.save
+      render json: { data: SettingSerializer.new(@setting).as_json, klass: 'Setting' }, status: :ok
+    end
+  end
+
 
   def create
     @setting = Setting.new(setting_params)
@@ -41,6 +59,6 @@ class V1::SettingsController < ApplicationController
   end
 
   def setting_params
-    params.require(:setting).permit!
+    params.all.permit#require(:setting).permit!
   end
 end

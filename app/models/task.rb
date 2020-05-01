@@ -14,6 +14,11 @@ class Task < ApplicationRecord
                 work.archived = true
                 work.save
             end
+        else
+            for work in self.works
+                work.archived = false
+                work.save
+            end
         end
     end
     def access(role)
