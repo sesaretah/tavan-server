@@ -20,18 +20,18 @@ class User < ApplicationRecord
   
   def set_setting
     setting = Setting.create(user_id: self.id)
-    setting.add_comments_to_tasks_email  = true
-    setting.add_comments_to_tasks_push  = true
-    setting.add_comments_to_works_email  = true
-    setting.add_comments_to_works_push  = true
-    setting.add_involvement_to_tasks_email = true
-    setting.add_involvement_to_tasks_push = true
-    setting.add_involvement_to_works_email = true
-    setting.add_involvement_to_works_push = true
-    setting.change_status_tasks_email = true
-    setting.change_status_tasks_push = true
-    setting.change_status_works_email = true
-    setting.change_status_works_push = true
+    setting.notification_setting['add_comments_to_tasks_email']  = true
+    setting.notification_setting['add_comments_to_tasks_push']  = true
+    setting.notification_setting['add_comments_to_works_email']  = true
+    setting.notification_setting['add_comments_to_works_push']  = true
+    setting.notification_setting['add_involvement_to_tasks_email'] = true
+    setting.notification_setting['add_involvement_to_tasks_push'] = true
+    setting.notification_setting['add_involvement_to_works_email'] = true
+    setting.notification_setting['add_involvement_to_works_push'] = true
+    setting.notification_setting['change_status_tasks_email'] = true
+    setting.notification_setting['change_status_tasks_push'] = true
+    setting.notification_setting['change_status_works_email'] = true
+    setting.notification_setting['change_status_works_push'] = true
     setting.save
   end
   def assign(role_id)
