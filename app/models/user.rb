@@ -20,6 +20,7 @@ class User < ApplicationRecord
   
   def set_setting
     setting = Setting.create(user_id: self.id)
+    setting.notification_setting = []
     setting.notification_setting['add_comments_to_tasks_email']  = true
     setting.notification_setting['add_comments_to_tasks_push']  = true
     setting.notification_setting['add_comments_to_works_email']  = true
