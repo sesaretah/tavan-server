@@ -58,7 +58,7 @@ class WorkSerializer < ActiveModel::Serializer
   end
 
   def the_comments
-    ActiveModel::SerializableResource.new(object.comments,  each_serializer: CommentSerializer ).as_json
+    ActiveModel::SerializableResource.new(object.comments,  each_serializer: CommentSerializer, scope: {user_id: scope[:user_id]} ).as_json
   end
 
   def reports
