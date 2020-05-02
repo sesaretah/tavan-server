@@ -20,6 +20,8 @@ class V1::ReportsController < ApplicationController
     params[:page].blank? ? @page = 1 : @page = params[:page]
     if valid_report?
       render json: { data:  ReportSerializer.new(@report, user_id: current_user.id, page: @page).as_json, klass: 'Report'}, status: :ok
+    else 
+      render json: { data: [], klass: 'Report'}, status: :ok
     end
   end
 

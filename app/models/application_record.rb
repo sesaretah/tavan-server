@@ -55,5 +55,12 @@ class ApplicationRecord < ActiveRecord::Base
     self.involvements.where(user_id: user.id).first
   end
 
+  def change_status(status_id, user)
+    if !user.profile.blank?
+      self.status_id = status_id
+      create_notification('ChangeStatus', user.profile)
+    end
+  end
+
 
 end

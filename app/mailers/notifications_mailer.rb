@@ -31,6 +31,10 @@ class NotificationsMailer < ActionMailer::Base
             @body = "#{custom_text}  #{t(:removed_from)} #{notify_text} #{t(:via)} #{notifier}"  
             @second_pargraph =  ""
             @title = "#{t(:user)} #{t(:removed_from)} #{truncate(notify_text)}"
+        when  'ChangeStatus'
+            @body = "  #{t(:status_changed)} #{notify_text}  #{t(:via)} #{notifier}"  
+            @second_pargraph =  ""
+            @title = "#{t(:status_changed)} #{truncate(notify_text)}"
 
         end
 

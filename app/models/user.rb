@@ -4,6 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :trackable
   has_one :profile
+  after_create :set_setting
 
   has_many :actuals, :dependent => :destroy
   has_many :metas, through: :actuals
@@ -17,7 +18,22 @@ class User < ApplicationRecord
   has_many :groups
   has_one :setting
   
-
+  def set_setting
+    setting = Setting.create(user_id: self.id)
+    setting.add_comments_to_tasks_email  = true
+    setting.add_comments_to_tasks_push  = true
+    setting.add_comments_to_works_email  = true
+    setting.add_comments_to_works_push  = true
+    setting.add_involvement_to_tasks_email = true
+    setting.add_involvement_to_tasks_push = true
+    setting.add_involvement_to_works_email = true
+    setting.add_involvement_to_works_push = true
+    setting.change_status_tasks_email = true
+    setting.change_status_tasks_push = true
+    setting.change_status_works_email = true
+    setting.change_status_works_push = true
+    setting.save
+  end
   def assign(role_id)
     self.assignments = [] if self.assignments.blank?
     self.assignments << role_id

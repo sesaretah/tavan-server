@@ -56,6 +56,9 @@ class Notification < ApplicationRecord
         when  'RemoveInvolvement'
             title = "#{custom_text}  #{I18n.t(:removed_from)} #{notify_text} #{I18n.t(:via)} #{notifier}"  
             body =  "#{truncate(custom_text)}"
+        when  'ChangeStatus'
+            title = "#{I18n.t(:status_changed)} #{notify_text}  #{I18n.t(:via)} #{notifier}"  
+            body =  ""
         end
         return {title: title, body: body}
     end
@@ -65,7 +68,7 @@ class Notification < ApplicationRecord
         return 'add_comments_to_'+ model.downcase.pluralize+'_' if  type == 'Comment'
         return 'add_reports_to_'+ model.downcase.pluralize+'_' if  type == 'Report'
         return 'add_works_to_'+ model.downcase.pluralize+'_' if  type == 'Work'
-        return 'change_status_'+ model.downcase.pluralize+'_' if  type == 'Status'
+        return 'change_status_'+ model.downcase.pluralize+'_' if  type == 'ChangeStatus'
         return 'add_involvement_to_'+ model.downcase.pluralize+'_' if type == 'AddInvolvement'
         return 'remove_involvement_from_'+ model.downcase.pluralize+'_' if type == 'RemoveInvolvement'
     end

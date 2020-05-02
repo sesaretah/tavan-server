@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     post '/settings/add_block', to: 'settings#add_block'
     post '/settings/remove_block', to: 'settings#remove_block'
     
+    get '/uploads/delete', to: 'uploads#destroy'
     
     
 
