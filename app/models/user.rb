@@ -8,15 +8,15 @@ class User < ApplicationRecord
 
   has_many :actuals, :dependent => :destroy
   has_many :metas, through: :actuals
-  has_many :tasks
-  has_many :statuses
-  has_many :tags
-  has_many :notifications
-  has_many :todos
-  has_many :time_sheets
-  has_many :devices
-  has_many :groups
-  has_one :setting
+  has_many :tasks, :dependent => :destroy
+  has_many :statuses, :dependent => :destroy
+  has_many :tags, :dependent => :destroy
+  has_many :notifications, :dependent => :destroy
+  has_many :todos, :dependent => :destroy
+  has_many :time_sheets, :dependent => :destroy
+  has_many :devices, :dependent => :destroy
+  has_many :groups, :dependent => :destroy
+  has_one :setting, :dependent => :destroy
   
   def set_setting
     setting = Setting.create(user_id: self.id)

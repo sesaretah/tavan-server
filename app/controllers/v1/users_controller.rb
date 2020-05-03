@@ -64,4 +64,10 @@ class V1::UsersController < ApplicationController
     render json: { data:  RoleSerializer.new(role, user_id: current_user.id).as_json, klass: 'Role'}, status: :ok
   end
 
+  def service
+    response = open('https://auth.ut.ac.ir:8443/cas/serviceValidate?service=https%3A%2F%2Ftavan.ut.ac.ir%2Fusers%2Fservice&ticket='+params[:ticket]).read
+    result = Hash.from_xml(response.gsub("\n", ""))
+    Rails.logger.info result
+  end
+
 end
