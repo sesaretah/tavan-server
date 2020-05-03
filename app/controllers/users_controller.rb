@@ -9,7 +9,8 @@ class UsersController < ApplicationController
             user = User.find_by_email(utid + '@ut.ac.ir')
             if user.blank?
                 password = SecureRandom.hex(6)
-                user = User.create(email: utid+ '@ut.ac.ir', password: password, password_confirmation: password, last_login: DateTime.now)            
+                user = User.create(email: utid+ '@ut.ac.ir', password: password, password_confirmation: password, last_login: DateTime.now)     
+                Profile.create(name: utid, user_id: user.id)       
             end
             redirect_to('https://tavan.ut.ac.ir/app.html#!/login_jwt/'+JWTWrapper.encode({ user_id: user.id }))
         else
