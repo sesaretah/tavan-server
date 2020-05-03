@@ -1,10 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  #devise_scope :user do
-   # get "/users/service", to: "users#service"
-   # get "/users/cas_login", to: "sessions#cas_login"
-  #end
+  devise_scope :user do
+    get "/users/service", to: "users#service"
+  end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   api_version(:module => "V1", :path => {:value => "v1"}) do
 
