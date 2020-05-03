@@ -23,7 +23,6 @@ class User < ApplicationRecord
     pre = {
       'add_comments_to_tasks_email' => true,
       'add_comments_to_tasks_push'  => true,
-      'add_comments_to_tasks_push'  => true,
       'add_comments_to_works_email' => true,
       'add_comments_to_works_push'  => true,
       'add_involvement_to_tasks_email' => true,
