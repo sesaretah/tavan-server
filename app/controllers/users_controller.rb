@@ -5,7 +5,7 @@ class UsersController < ApplicationController
         result = Hash.from_xml(response.gsub("\n", ""))
         Rails.logger.info result
         if !result['serviceResponse']['authenticationSuccess'].blank?
-            redirect_to('https://tavan.ut.ac.ir/app.html#!/login/'+result['serviceResponse']['authenticationSuccess'])
+            redirect_to('https://tavan.ut.ac.ir/app.html#!/login/'+result['serviceResponse']['authenticationSuccess']['user'])
         end
       end
     
