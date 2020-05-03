@@ -45,6 +45,14 @@ class V1::UsersController < ApplicationController
  #   end
  # end
 
+  def validate_token
+    if !current_user.blank?
+      render :json => {data: {result: 'OK', token: JWTWrapper.encode({ user_id: user.id }), user_id: user.id}, klass: 'Verify'}.to_json , :callback => params['callback']
+    else 
+      render json: { data:  [], klass: 'Error'}, status: :ok
+    end
+  end
+
   def index
     users = User.all
     render json: { data: ActiveModel::SerializableResource.new(users, user_id: current_user.id,  each_serializer: UserSerializer ).as_json, klass: 'User' }, status: :ok

@@ -79,6 +79,7 @@ Rails.application.routes.draw do
     post '/users/login', to: 'users#login'
     post '/users/verify', to: 'users#verify'
     post '/users/sign_up', to: 'users#sign_up'
+    post '/users/validate_token', to: 'users#validate_token'
 
   end
 end
