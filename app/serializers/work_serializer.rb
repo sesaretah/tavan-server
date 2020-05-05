@@ -15,8 +15,9 @@ class WorkSerializer < ActiveModel::Serializer
 
   def the_involvements
     result = []
-    if !object.involvements.blank?
-      object.involvements.each do |involvement|
+    involvements = object.involvements
+    if !involvements.blank?
+      involvements.each do |involvement|
         profile = involvement.user.profile
         result << {profile: ProfileSerializer.new(profile).as_json, role: involvement.role}if !profile.blank?
       end
