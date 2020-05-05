@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_30_194737) do
+ActiveRecord::Schema.define(version: 2020_05_05_170229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,9 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.string "commentable_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["commentable_id"], name: "index_comments_on_commentable_id"
+    t.index ["commentable_type"], name: "index_comments_on_commentable_type"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "devices", force: :cascade do |t|
@@ -61,6 +64,7 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.text "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_devices_on_user_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -69,6 +73,7 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.json "grouping"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_groups_on_user_id"
   end
 
   create_table "involvements", force: :cascade do |t|
@@ -80,6 +85,9 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "involveable_type"
+    t.index ["involveable_id"], name: "index_involvements_on_involveable_id"
+    t.index ["involveable_type"], name: "index_involvements_on_involveable_type"
+    t.index ["user_id"], name: "index_involvements_on_user_id"
   end
 
   create_table "meta", force: :cascade do |t|
@@ -102,6 +110,10 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "custom_text"
+    t.index ["notifiable_id"], name: "index_notifications_on_notifiable_id"
+    t.index ["notifiable_type"], name: "index_notifications_on_notifiable_type"
+    t.index ["notification_type"], name: "index_notifications_on_notification_type"
+    t.index ["source_user_id"], name: "index_notifications_on_source_user_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -113,6 +125,7 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.json "experties"
+    t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
   create_table "reports", force: :cascade do |t|
@@ -125,7 +138,10 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "uuid"
+    t.index ["task_id"], name: "index_reports_on_task_id"
+    t.index ["user_id"], name: "index_reports_on_user_id"
     t.index ["uuid"], name: "index_reports_on_uuid"
+    t.index ["work_id"], name: "index_reports_on_work_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -135,6 +151,7 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.boolean "default_role"
+    t.index ["user_id"], name: "index_roles_on_user_id"
   end
 
   create_table "settings", force: :cascade do |t|
@@ -144,6 +161,7 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.json "blocked_list"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_settings_on_user_id"
   end
 
   create_table "statuses", force: :cascade do |t|
@@ -152,6 +170,7 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.index ["user_id"], name: "index_statuses_on_user_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -159,6 +178,7 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_tags_on_user_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -176,6 +196,8 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.json "tags"
     t.boolean "archived"
     t.text "archive_note"
+    t.index ["status_id"], name: "index_tasks_on_status_id"
+    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "time_sheets", force: :cascade do |t|
@@ -188,6 +210,7 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.date "sheet_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_time_sheets_on_user_id"
   end
 
   create_table "todos", force: :cascade do |t|
@@ -198,6 +221,8 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.index ["user_id"], name: "index_todos_on_user_id"
+    t.index ["work_id"], name: "index_todos_on_work_id"
   end
 
   create_table "uploads", force: :cascade do |t|
@@ -257,6 +282,9 @@ ActiveRecord::Schema.define(version: 2020_04_30_194737) do
     t.datetime "updated_at", null: false
     t.string "priority"
     t.boolean "archived"
+    t.index ["status_id"], name: "index_works_on_status_id"
+    t.index ["task_id"], name: "index_works_on_task_id"
+    t.index ["user_id"], name: "index_works_on_user_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
