@@ -3,7 +3,7 @@ class V1::WorksController < ApplicationController
   
   def index
     works = Work.newest_works(current_user)
-    render json: { data: ActiveModel::SerializableResource.new(works, scope: {user_id: current_user.id},  each_serializer: WorkSerializer ).as_json, klass: 'Work' }, status: :ok
+    render json: { data: ActiveModel::SerializableResource.new(works, scope: {user_id: current_user.id},  each_serializer: WorkIndexSerializer ).as_json, klass: 'Work' }, status: :ok
   end
 
   def change_role
