@@ -63,7 +63,7 @@ class WorkSerializer < ActiveModel::Serializer
   end
 
   def reports
-    ActiveModel::SerializableResource.new(object.reports,  each_serializer: ReportSerializer ).as_json
+    ActiveModel::SerializableResource.new(object.reports,  each_serializer: ReportIndexSerializer ).as_json
   end
 
   def start_date
