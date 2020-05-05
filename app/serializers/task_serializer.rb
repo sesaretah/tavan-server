@@ -9,7 +9,7 @@ class TaskSerializer < ActiveModel::Serializer
   
   def works
      if scope && scope[:user_id]
-      ActiveModel::SerializableResource.new(object.works.order('deadline DESC'), scope:{user_id: scope[:user_id]} ,each_serializer: WorkSerializer ).as_json
+      ActiveModel::SerializableResource.new(object.works.order('deadline DESC'), scope:{user_id: scope[:user_id]} ,each_serializer: WorkIndexSerializer ).as_json
     end
   end
 
