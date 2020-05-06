@@ -22,13 +22,13 @@ class Work < ApplicationRecord
     def access(role)
         case role
         when 'Creator'
-            return ['edit','reports', 'comments', 'statuses', 'view', 'involvements', 'todos']
+            return ['edit','reports', 'view_reports', 'comments', 'statuses', 'view', 'involvements', 'todos']
         when 'Admin'
-            return ['reports', 'comments', 'statuses', 'view', 'involvements']
+            return ['reports', 'view_reports', 'comments', 'statuses', 'view', 'involvements']
         when 'Colleague'
-            return ['comments', 'view']
+            return ['reports', 'view_reports' ,'comments', 'view']
         when 'Confirmer'
-            ['statuses', 'view', 'todos']
+            ['statuses', 'view_reports' ,'view', 'todos']
         when 'Observer'
             ['view']
         when nil
