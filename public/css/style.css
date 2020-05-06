@@ -4,7 +4,7 @@
       font-family: Tanha;
       src: url('../fonts/tanha.eot');
       src: url('../fonts/tanhaie.eot') format('embedded-opentype'),
-           url('../fonts/tanha/tanha.woff') format('woff'),
+           url('../fonts/tanha.woff') format('woff'),
            url('../fonts/tanha.ttf') format('truetype');
       font-weight: normal;
     }
