@@ -5,6 +5,7 @@ class UsersController < ApplicationController
         result = Hash.from_xml(response.gsub("\n", ""))
         Rails.logger.info result
         if !result['serviceResponse']['authenticationSuccess'].blank?
+            p result
             utid = result['serviceResponse']['authenticationSuccess']['user']
             user = User.find_by_email(utid + '@ut.ac.ir')
             if user.blank?
