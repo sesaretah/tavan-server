@@ -64,8 +64,8 @@ Rails.application.configure do
     address: 'mail.ut.ac.ir',
     port: 587,
     domain: 'mail.ut.ac.ir',
-    user_name: 'snadmin',
-    password: '30Tue2017',
+    user_name: 'tavan',
+    password: 'Tvn&&2010',
     authentication: 'plain',
     enable_starttls_auto: true
 }

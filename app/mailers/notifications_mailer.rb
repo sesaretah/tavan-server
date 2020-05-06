@@ -39,7 +39,7 @@ class NotificationsMailer < ActionMailer::Base
         end
 
         mail(   :to      => @user.email,
-                :from => 'snadmin@ut.ac.ir',
+                :from => 'tavan@ut.ac.ir',
                 :subject => @title
         ) do |format|
           format.text
