@@ -58,6 +58,13 @@ class V1::UsersController < ApplicationController
     render json: { data: ActiveModel::SerializableResource.new(users, user_id: current_user.id,  each_serializer: UserSerializer ).as_json, klass: 'User' }, status: :ok
   end
 
+  def role
+    if !current_user.blank?
+      render json: { data:  AbilitySerializer.new(current_user).as_json, klass: 'UserRole'}, status: :ok
+    end
+  end
+
+
   def assignments
     user = User.find(params[:user_id])
     role = Role.find(params[:role_id])

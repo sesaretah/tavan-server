@@ -22,6 +22,10 @@ class Todo < ApplicationRecord
         Notification.create(notifiable_id: self.work.id, notifiable_type: 'Work', notification_type: 'Todo', source_user_id: self.user_id, target_user_ids: self.work.owners , seen: false, custom_text: self.title)
     end
 
+    def check_todo(c, user)
+        self.is_done = c if involvement_exists?(user.id)
+    end
+
     def access(role)
         case role
         when 'Creator'

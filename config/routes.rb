@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     
     get '/uploads/delete', to: 'uploads#destroy'
     
+    get '/users/role', to: 'users#role'
     
 
     resources :profiles

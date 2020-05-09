@@ -1,6 +1,6 @@
 class TaskIndexSerializer < ActiveModel::Serializer
   attributes :id, :title, :details, :the_tags,
-             :is_public, :report_alert, :comment_alert, :deadline_alert,
+             :is_public, :report_alert, :comment_alert, :deadline_alert, :ability
 
 
   def is_public
@@ -13,6 +13,14 @@ class TaskIndexSerializer < ActiveModel::Serializer
       return Comment.comments_since(user, object)
     end
   end
+
+  def ability 
+    if scope && scope[:user_id]
+      user = User.find_by_id(scope[:user_id])
+      user.ability if user
+    end
+  end
+
 
   def deadline_alert
     if scope && scope[:user_id]

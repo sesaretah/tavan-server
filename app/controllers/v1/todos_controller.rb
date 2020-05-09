@@ -7,7 +7,8 @@ class V1::TodosController < ApplicationController
 
   def check_todo
     @todo = Todo.find(params[:id])
-    @todo.is_done = params[:is_done]
+    @todo.check_todo(params[:is_done], current_user)
+    #@todo.is_done = params[:is_done]
     if @todo.save
       render json: { data: WorkSerializer.new(@todo.work, scope: {user_id: current_user.id}).as_json, klass: 'Work' }, status: :ok
     end

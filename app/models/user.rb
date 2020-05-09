@@ -48,6 +48,14 @@ class User < ApplicationRecord
     self.save
   end
 
+  def selected_role
+    Role.find_by_id(self.current_role_id)
+  end
+
+  def ability
+    self.selected_role.ability if self.selected_role
+  end
+
   def notify_user
     code = rand(10 ** 6).to_s.rjust(6,'0')  
     self.last_code = code

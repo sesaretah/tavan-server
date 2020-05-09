@@ -13,6 +13,7 @@ class TaskSerializer < ActiveModel::Serializer
     end
   end
 
+
   def groups
     if scope && scope[:user_id]
       user = User.find(scope[:user_id])
