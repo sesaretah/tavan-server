@@ -18,7 +18,7 @@ class V1::ReportsController < ApplicationController
   def show
     @report = Report.find(params[:id])
     params[:page].blank? ? @page = 1 : @page = params[:page]
-    if valid_report?
+    if valid_show_report?
       render json: { data:  ReportSerializer.new(@report, user_id: current_user.id, page: @page).as_json, klass: 'Report'}, status: :ok
     else 
       render json: { data: [], klass: 'Report'}, status: :ok
@@ -54,6 +54,15 @@ class V1::ReportsController < ApplicationController
       valid = is_valid?(@report.work, 'reports') 
     else 
       valid = is_valid?(@report.task, 'reports')
+    end
+    return valid
+  end
+
+  def valid_show_report?
+    if @report.work
+      valid = is_valid?(@report.work, 'view_reports') 
+    else 
+      valid = is_valid?(@report.task, 'view_reports')
     end
     return valid
   end

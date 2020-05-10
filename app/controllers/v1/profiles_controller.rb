@@ -15,7 +15,11 @@ class V1::ProfilesController < ApplicationController
   end
 
   def index
-    profiles = Profile.all
+    if current_user.has_ability('show_profile')
+      profiles = Profile.all
+    else 
+      profiles = Profile.where(user_id: current_user.id)
+    end
     render json: { data: ActiveModel::SerializableResource.new(profiles,  each_serializer: ProfileSerializer ).as_json, klass: 'Profile' }, status: :ok
   end
 
@@ -30,7 +34,7 @@ class V1::ProfilesController < ApplicationController
 
   def show
     @profile = Profile.find(params[:id])
-    render json: { data: ProfileSerializer.new(@profile).as_json,  klass: 'Profile' }, status: :ok
+    render json: { data: ProfileShowSerializer.new(@profile, scope: {user_id: current_user.id} ).as_json,  klass: 'Profile' }, status: :ok
   end
 
   def my

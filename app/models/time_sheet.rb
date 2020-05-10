@@ -47,8 +47,8 @@ class TimeSheet < ApplicationRecord
       end
     end
 
-  def self.related(user, page)
-    involvement_ids = Involvement.where('user_id = ? AND role = ? AND involveable_type = ?', user.id, 'Observer', 'TimeSheet').pluck(:id).uniq
+  def self.related(user, page=1)
+    involvement_ids = Involvement.where('user_id = ? AND role = ? AND involveable_type = ?', user.id, 'Observer', 'TimeSheet').pluck(:involveable_id).uniq
     return self.where('id IN (?)', involvement_ids).order('sheet_date DESC').paginate(page: page, per_page: 20)
   end
 

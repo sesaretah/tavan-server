@@ -24,13 +24,13 @@ class Task < ApplicationRecord
     def access(role)
         case role
         when 'Creator'
-            return ['edit','works','reports', 'comments', 'statuses', 'view', 'involvements']
+            return ['edit','works', 'view_reports','reports', 'comments', 'statuses', 'view', 'involvements']
         when 'Admin'
-            return ['works','reports', 'comments', 'view', 'involvements']
+            return ['works', 'view_reports','reports', 'comments', 'view', 'involvements']
         when 'Colleague'
-            return ['comments', 'view']
+            return ['comments', 'view_reports', 'view']
         when 'Confirmer'
-            ['view','statuses']
+            ['view', 'view_reports','statuses']
         when 'Observer'
             ['view']
         when nil

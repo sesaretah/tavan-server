@@ -56,6 +56,16 @@ class User < ApplicationRecord
     self.selected_role.ability if self.selected_role
   end
 
+  def has_ability(ab)
+    flag = false
+    if !self.selected_role.blank? && !self.selected_role.ability.blank?
+      for a in self.selected_role.ability
+        flag = true if a['title'] == ab
+      end
+    end
+    return flag
+  end
+
   def notify_user
     code = rand(10 ** 6).to_s.rjust(6,'0')  
     self.last_code = code
