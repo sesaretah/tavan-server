@@ -77,4 +77,8 @@ class Notification < ApplicationRecord
     def user
         User.find_by_id(self.source_user_id) if self.source_user_id
     end
+
+    def self.user_related(user, page)
+        self.where("target_user_hash ->> '#{user.id}' = 'true'")
+    end
 end

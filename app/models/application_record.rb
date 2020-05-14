@@ -12,10 +12,17 @@ class ApplicationRecord < ActiveRecord::Base
   def create_notification(type, profile)
     Notification.create(
       notifiable_id: self.id, notifiable_type: self.class.name, 
-      notification_type: type, source_user_id: self.user_id, 
+      notification_type: type, source_user_id: self.user_id, target_user_hash: self.id_to_hash,
       target_user_ids: self.owners , seen: false, custom_text: profile.fullname)
   end
 
+  def id_to_hash
+    hash = {}
+    for id in self.owners
+      hash["#{id}"] = 'true'
+    end
+    return hash
+  end
 
   def add_involvement(profile_id, user)
     profile = Profile.find_by_id(profile_id)
@@ -37,7 +44,7 @@ class ApplicationRecord < ActiveRecord::Base
 
 
   def owners
-    self.involvements.pluck(:user_id).uniq
+    self.involvements.pluck(:user_id).uniq #- [self.user_id]
   end
 
 

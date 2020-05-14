@@ -5,7 +5,8 @@ class Tag < ApplicationRecord
     def self.filter_unconfirmed(tags, user)
         result = []
         for tag in tags
-            if tag.confirmed || tag.user_id == user.id
+            result << tag if tag.confirmed || tag.user_id == user.id
         end
+        return result
     end
 end

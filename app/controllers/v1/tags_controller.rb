@@ -8,6 +8,7 @@ class V1::TagsController < ApplicationController
   def search
     if !params[:q].blank?
       tags = Tag.search params[:q], star: true
+      tags = Tag.filter_unconfirmed(tags)
       render json: { data: ActiveModel::SerializableResource.new(tags,  each_serializer: TagSerializer ).as_json, klass: 'Tag' }, status: :ok
     else 
       render json: { data: [], klass: 'Tag' }, status: :ok

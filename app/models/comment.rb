@@ -12,12 +12,24 @@ class Comment < ApplicationRecord
     end
 
     def notify_by_mail
-        Notification.create(notifiable_id: self.commentable_id, notifiable_type: self.commentable_type, notification_type: 'Comment', source_user_id: self.user_id, target_user_ids: self.owners , seen: false, custom_text: self.content)
+        Notification.create(
+            notifiable_id: self.commentable_id, notifiable_type: self.commentable_type, 
+            notification_type: 'Comment', source_user_id: self.user_id, 
+            target_user_ids: self.owners , seen: false, custom_text: self.content, 
+            target_user_hash: self.id_to_hash
+        )
     end
 
+    def id_to_hash
+        hash = {}
+        for id in self.owners
+          hash["#{id}"] = 'true'
+        end
+        return hash
+    end
 
     def owners
-        self.commentable.owners.uniq
+        self.commentable.owners.uniq #- [self.user_id]
     end
 
     def self.comments_since(user, obj)

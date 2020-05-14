@@ -55,6 +55,9 @@ Rails.application.routes.draw do
     get '/uploads/delete', to: 'uploads#destroy'
     
     get '/users/role', to: 'users#role'
+
+    get '/notifications' , to: 'notifications#my'
+    post '/notifications' , to: 'notifications#seen'
     
 
     resources :profiles

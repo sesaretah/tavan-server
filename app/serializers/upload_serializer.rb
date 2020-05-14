@@ -4,7 +4,7 @@ class UploadSerializer < ActiveModel::Serializer
 
   def link
     if object.doc.attached?
-      'http://localhost:3001' + rails_blob_url(object.doc, only_path: true)
+      Rails.application.routes.default_url_options[:host] + rails_blob_url(object.doc, only_path: true)
     end
   end
 end
