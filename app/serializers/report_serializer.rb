@@ -13,7 +13,7 @@ class ReportSerializer < ActiveModel::Serializer
     for u in object.uploads
       upload = Upload.find(u.id)
       if upload.doc.attached?
-        result << {id: upload.id, link: 'http://localhost:3001' + rails_blob_url(upload.doc, only_path: true), filename: upload.doc.blob.filename}
+        result << {id: upload.id, link: Rails.application.routes.default_url_options[:host] + rails_blob_url(upload.doc, only_path: true), filename: upload.doc.blob.filename}
       end
     end
     return result
