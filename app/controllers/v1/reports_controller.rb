@@ -44,8 +44,8 @@ class V1::ReportsController < ApplicationController
 
   def destroy
     @report = Report.find(params[:id])
-    if @report.destroy
-      render json: { data: 'OK'}, status: :ok
+    if  @report.user_id ==  current_user.id  && @report.destroy
+      render json: { data: []}, status: :ok
     end
   end
 

@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     get '/statuses/search', to: 'statuses#search'
     
     get '/reports/search', to: 'reports#search'
+    get '/reports/delete', to: 'reports#destroy'
 
     get '/tags/search', to: 'tags#search'
     
