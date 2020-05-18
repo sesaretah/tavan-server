@@ -54,6 +54,10 @@ class Work < ApplicationRecord
         self.deadline = params['deadline'].to_datetime.in_time_zone("Tehran").change({ hour: deadline_time[0].to_i, min: deadline_time[1].to_i, sec: 0 }).asctime.in_time_zone("Tehran")  
     end
 
+    def archived
+        self.task.archived
+    end
+
     def comments 
         Comment.where(commentable_type: 'Work', commentable_id: self.id)
     end

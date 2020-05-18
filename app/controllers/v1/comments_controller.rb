@@ -14,6 +14,9 @@ class V1::CommentsController < ApplicationController
       if @comment.commentable_type == 'TimeSheet'
         render json: { data:  TimeSheetSerializer.new(@comment.commentable, scope: {user_id: current_user.id}, page: @page).as_json, klass: 'TimeSheet'}, status: :ok
       end
+      if @comment.commentable_type == 'Report'
+        render json: { data:  ReportSerializer.new(@comment.commentable, scope: {user_id: current_user.id}, page: @page).as_json, klass: 'Report'}, status: :ok
+      end
     end
   end
 
@@ -30,6 +33,9 @@ class V1::CommentsController < ApplicationController
       end
       if @cm.commentable_type == 'TimeSheet'
         render json: { data: TimeSheetSerializer.new(@cm.commentable, scope: {user_id: current_user.id}, page: @page).as_json, klass: 'TimeSheet'}, status: :ok
+      end
+      if @cm.commentable_type == 'Report'
+        render json: { data: ReportSerializer.new(@cm.commentable, scope: {user_id: current_user.id}, page: @page).as_json, klass: 'Report'}, status: :ok
       end
     end
   end

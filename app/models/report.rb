@@ -21,12 +21,40 @@ class Report < ApplicationRecord
         end
     end
 
+    def archived
+        if !self.work_id.blank?
+            self.work.archived
+        else 
+            self.task.archived
+        end
+    end
+
     def profile
         self.user.profile if self.user
     end
 
     def uploads
         Upload.where(uuid: self.uuid)
+    end
+
+    def user_role(user)
+        if !self.work_id.blank?
+            self.work.user_role(user)
+        else 
+            self.task.user_role(user)
+        end
+    end
+
+    def access(role)
+        if !self.work_id.blank?
+            self.work.access(role)
+        else 
+            self.task.access(role)
+        end
+    end
+
+    def comments 
+        Comment.where(commentable_type: 'Report', commentable_id: self.id)
     end
 
     def self.reports_since(user, obj)
