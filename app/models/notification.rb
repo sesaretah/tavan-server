@@ -79,6 +79,6 @@ class Notification < ApplicationRecord
     end
 
     def self.user_related(user, page)
-        self.where("target_user_hash ->> '#{user.id}' = 'true'")
+        self.where("source_user_id != #{user.id} AND target_user_hash ->> '#{user.id}' = 'true'")
     end
 end

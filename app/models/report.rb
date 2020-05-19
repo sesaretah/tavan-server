@@ -72,4 +72,10 @@ class Report < ApplicationRecord
         end
         return flag
     end
+
+    def self.user_reports(user)
+        task_ids = Task.user_tasks(user).pluck(:id)
+        work_ids = Work.user_works(user).pluck(:id)
+        self.where('work_id IN (?) OR task_id IN (?)', work_ids, task_ids).order('updated_at DESC').limit(10)
+    end
 end

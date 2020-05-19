@@ -15,7 +15,7 @@ class Work < ApplicationRecord
 
     def self.newest_works(user)
         works =  user_works(user)
-        works.sort_by{ |obj| obj.updated_at }
+        works.sort_by{ |obj| obj.updated_at }.reverse
     end
 
 
