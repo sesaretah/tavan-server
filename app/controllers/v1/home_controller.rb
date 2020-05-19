@@ -7,7 +7,8 @@ class V1::HomeController < ApplicationController
     notifications = Notification.user_related(current_user, params[:page]).order('created_at DESC')
     #comments= 
     reports = Report.user_reports(current_user)
-    render json: { data: {tasks: jsoner(tasks, TaskIndexSerializer), works: jsoner(works, WorkIndexSerializer) , notifications: jsoner(notifications, NotificationSerializer), reports: jsoner(reports, ReportSerializer)}, klass: 'Home' }, status: :ok
+    tv = Task.user_tasks(current_user)
+    render json: { data: {tasks: jsoner(tasks, TaskIndexSerializer), works: jsoner(works, WorkIndexSerializer) , notifications: jsoner(notifications, NotificationSerializer), reports: jsoner(reports, ReportSerializer), tasks_visits: jsoner(tv, ActivitySerializer)}, klass: 'Home' }, status: :ok
   end
 
 
