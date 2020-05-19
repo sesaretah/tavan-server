@@ -18,6 +18,10 @@ class Work < ApplicationRecord
         works.sort_by{ |obj| obj.updated_at }.reverse
     end
 
+    def self.user_events(user)
+         self.user_works(user).pluck(:id, :title, :deadline)
+    end
+
 
     def access(role)
         case role
