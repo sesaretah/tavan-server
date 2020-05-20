@@ -65,9 +65,12 @@ class ApplicationRecord < ActiveRecord::Base
   def change_status(status_id, user)
     if !user.profile.blank?
       self.status_id = status_id
+      StatusChange.create(statusable_type: self.class.name, statusable_id: self.id, status_id: status_id, user_id: user.id)
       create_notification('ChangeStatus', user.profile)
     end
   end
+
+
 
 
 end

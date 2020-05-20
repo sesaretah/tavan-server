@@ -21,8 +21,8 @@ class V1::WorksController < ApplicationController
 
   def change_status
     @work = Work.find(params[:id])
-    @work.status_id = params[:status_id]
-    @work.save if is_valid?(@work , 'statuses')
+    @work.change_status(params[:status_id], current_user) if is_valid?(@work, 'statuses')
+    @work.save 
     render json: { data: WorkSerializer.new(@work, scope: {user_id: current_user.id}).as_json, klass: 'Work' }, status: :ok
   end
 

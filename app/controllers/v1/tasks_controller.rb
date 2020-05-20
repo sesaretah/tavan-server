@@ -26,8 +26,8 @@ class V1::TasksController < ApplicationController
 
   def change_status
     @task = Task.find(params[:id])
-    @task.change_status(params[:status_id], current_user) 
-    @task.save if is_valid?(@task, 'statuses')
+    @task.change_status(params[:status_id], current_user) if is_valid?(@task, 'statuses')
+    @task.save 
     render json: { data: TaskSerializer.new(@task, scope: {user_id: current_user.id} ).as_json, klass: 'Task' }, status: :ok
   end
 

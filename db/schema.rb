@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_12_142239) do
+ActiveRecord::Schema.define(version: 2020_05_20_192536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,6 +163,19 @@ ActiveRecord::Schema.define(version: 2020_05_12_142239) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_settings_on_user_id"
+  end
+
+  create_table "status_changes", force: :cascade do |t|
+    t.integer "statusable_id"
+    t.string "statusable_type"
+    t.integer "status_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status_id"], name: "index_status_changes_on_status_id"
+    t.index ["statusable_id"], name: "index_status_changes_on_statusable_id"
+    t.index ["statusable_type"], name: "index_status_changes_on_statusable_type"
+    t.index ["user_id"], name: "index_status_changes_on_user_id"
   end
 
   create_table "statuses", force: :cascade do |t|
