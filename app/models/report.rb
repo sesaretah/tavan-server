@@ -54,7 +54,7 @@ class Report < ApplicationRecord
     end
 
     def comments 
-        Comment.where(commentable_type: 'Report', commentable_id: self.id)
+        Comment.where(commentable_type: 'Report', commentable_id: self.id).order('created_at ASC')
     end
 
     def self.reports_since(user, obj)
