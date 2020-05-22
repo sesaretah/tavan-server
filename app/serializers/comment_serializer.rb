@@ -1,5 +1,6 @@
 class CommentSerializer < ActiveModel::Serializer
-  attributes :id, :content, :created_at, :profile, :editable
+  include ActionView::Helpers::TextHelper
+  attributes :id, :content, :created_at, :profile, :editable, :reply_to
   def profile 
      ProfileSerializer.new(object.profile).as_json
   end 
@@ -14,5 +15,9 @@ class CommentSerializer < ActiveModel::Serializer
       flag =  true if access && access.include?('edit') 
       return flag
     end
+  end
+
+  def reply_to
+    truncate(object.reply.content) if object.reply
   end
 end

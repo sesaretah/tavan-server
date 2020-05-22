@@ -39,21 +39,21 @@ class Task < ApplicationRecord
     end
 
     def comments 
-        Comment.where(commentable_type: 'Task', commentable_id: self.id)
+        Comment.where(commentable_type: 'Task', commentable_id: self.id).order('created_at ASC')
     end
 
 
-    def self.user_tasks(user)
-        Task.joins(:involvements).where("involvements.involveable_type = ? AND involvements.user_id = ?", 'Task', user.id)
+    def self.user_tasks(user, page=1, pp=10)
+        Task.joins(:involvements).where("involvements.involveable_type = ? AND involvements.user_id = ?", 'Task', user.id).paginate(page: page, per_page: pp)
     end
 
-    def self.order_by_title_for_user(user)
-        tasks =  user_tasks(user)
+    def self.order_by_title_for_user(user, page=1, pp=10)
+        tasks =  user_tasks(user, page, pp)
         tasks.sort_by{ |obj| obj.title }
     end
 
-    def self.order_by_deadline_for_user(user)
-        tasks =  user_tasks(user)
+    def self.order_by_deadline_for_user(user, page=1, pp=10)
+        tasks =  user_tasks(user, page, pp)
         tasks.sort_by{ |obj| obj.nearest_deadline }.reverse
     end
 

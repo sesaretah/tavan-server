@@ -63,7 +63,7 @@ class Work < ApplicationRecord
     end
 
     def comments 
-        Comment.where(commentable_type: 'Work', commentable_id: self.id)
+        Comment.where(commentable_type: 'Work', commentable_id: self.id).order('created_at ASC')
     end
 
     def self.deadline_since(user, obj)

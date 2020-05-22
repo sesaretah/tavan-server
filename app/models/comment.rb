@@ -7,6 +7,10 @@ class Comment < ApplicationRecord
         commentable.user if commentable.user
     end
 
+    def reply
+        Comment.find_by_id(self.reply_id)
+    end
+
     def profile
         self.user.profile if self.user && self.user.profile
     end

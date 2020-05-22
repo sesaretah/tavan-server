@@ -2,7 +2,7 @@ class V1::HomeController < ApplicationController
 
 
   def index
-    params['order'] == 'title' ? tasks = Task.order_by_title_for_user(current_user)  : tasks = Task.order_by_deadline_for_user(current_user) 
+    params['order'] == 'title' ? tasks = Task.order_by_title_for_user(current_user, params[:task_page], params[:task_pp])  : tasks = Task.order_by_deadline_for_user(current_user, params[:task_page], params[:task_pp])
     works = Work.newest_works(current_user)
     notifications = Notification.user_related(current_user, params[:page]).order('created_at DESC')
     reports = Report.user_reports(current_user)
