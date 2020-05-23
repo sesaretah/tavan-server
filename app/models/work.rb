@@ -46,7 +46,8 @@ class Work < ApplicationRecord
     end
 
     def owners
-        self.task.involvements.pluck(:user_id).uniq
+        #self.task.involvements.pluck(:user_id).uniq
+        self.involvements.pluck(:user_id).uniq
     end
 
 
