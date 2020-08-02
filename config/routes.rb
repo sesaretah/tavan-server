@@ -25,10 +25,10 @@ Rails.application.routes.draw do
 
     post '/works/involvements', to: 'works#add_involvements'
     get '/works/involvements/delete', to: 'works#remove_involvements'
-
     post '/works/status', to: 'works#change_status'
     post '/works/change_role', to: 'works#change_role'
     get '/works/delete', to: 'works#destroy'
+    get '/works/search', to: 'works#search'
 
     post '/todos/check_todo', to: 'todos#check_todo'
     get '/todos/delete', to: 'todos#destroy'

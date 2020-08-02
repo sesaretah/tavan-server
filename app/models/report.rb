@@ -1,4 +1,5 @@
 class Report < ApplicationRecord
+    after_save ThinkingSphinx::RealTime.callback_for(:report)
     belongs_to :task, optional: true
     belongs_to :work, optional: true
     belongs_to :user

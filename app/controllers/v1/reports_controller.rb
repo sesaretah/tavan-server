@@ -6,12 +6,21 @@ class V1::ReportsController < ApplicationController
   end
 
   def search
-    if !params[:q].blank?
-      reports = Report.search params[:q], star: true, page: params[:page], per_page: 6
-    else 
-      reports = Report.paginate(page: params[:page], per_page: 6)
+    if !params[:q].blank? && !params[:task_id].blank?
+      reports = Report.search params[:q], star: true, with: {task_id: params[:task_id].to_i},page: params[:page]
     end
-    render json: { data: ActiveModel::SerializableResource.new(reports,  each_serializer: ReportSerializer, scope: {user_id: current_user.id} ).as_json, klass: 'Report' }, status: :ok
+    if params[:q].blank? && !params[:task_id].blank?
+      reports = Report.where(task_id: params[:task_id])
+    end
+    if !params[:q].blank? && !params[:work_id].blank?
+      reports = Report.search params[:q], star: true, with: {work_id: params[:work_id].to_i},page: params[:page]
+    end
+    if params[:q].blank? && !params[:work_id].blank?
+      reports = Report.where(work_id: params[:work_id])
+    end
+    if !reports.blank?
+      render json: { data: ActiveModel::SerializableResource.new(reports,  each_serializer: ReportSerializer, scope: {user_id: current_user.id} ).as_json, klass: 'Report' }, status: :ok
+    end
   end
 
 

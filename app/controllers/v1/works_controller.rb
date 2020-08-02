@@ -13,6 +13,19 @@ class V1::WorksController < ApplicationController
   end
 
 
+  def search
+    if !params[:q].blank? && !params[:task_id].blank?
+      works = Work.search params[:q], star: true, with: {task_id: params[:task_id].to_i},page: params[:page]
+    end
+    if params[:q].blank? 
+      works = Work.where(task_id: params[:task_id])
+    end
+    if !works.blank?
+      render json: { data: ActiveModel::SerializableResource.new(works,  each_serializer: WorkIndexSerializer, scope: {user_id: current_user.id} ).as_json, klass: 'Work' }, status: :ok
+    end
+  end
+
+
   def add_involvements
     @work = Work.find(params[:id])
     @work.add_involvement(params[:profile_id], current_user) if is_valid?(@work , 'involvements')
