@@ -44,17 +44,23 @@ class Task < ApplicationRecord
 
 
     def self.user_tasks(user, page=1, pp=10)
-        Task.joins(:involvements).where("involvements.involveable_type = ? AND involvements.user_id = ?", 'Task', user.id).paginate(page: page, per_page: pp)
+        Rails.cache.fetch("/user_tasks/#{user.id}/#{pp}/#{page}", expires_in: 2.hours) do
+            Task.joins(:involvements).where("involvements.involveable_type = ? AND involvements.user_id = ?", 'Task', user.id).paginate(page: page, per_page: pp)
+        end
     end
 
     def self.order_by_title_for_user(user, page=1, pp=10)
-        tasks =  user_tasks(user, page, pp)
-        tasks.sort_by{ |obj| obj.title }
+        Rails.cache.fetch("/order_by_title_for_user/#{user.id}/#{pp}/#{page}", expires_in: 2.hours) do
+            tasks =  user_tasks(user, page, pp)
+            tasks.sort_by{ |obj| obj.title }
+        end
     end
 
     def self.order_by_deadline_for_user(user, page=1, pp=10)
-        tasks =  user_tasks(user, page, pp)
-        tasks.sort_by{ |obj| obj.nearest_deadline }.reverse
+        Rails.cache.fetch("/order_by_deadline_for_user/#{user.id}/#{pp}/#{page}", expires_in: 2.hours) do
+            tasks =  user_tasks(user, page, pp)
+            tasks.sort_by{ |obj| obj.nearest_deadline }.reverse
+        end
     end
 
     def nearest_deadline

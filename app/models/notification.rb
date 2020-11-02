@@ -79,6 +79,8 @@ class Notification < ApplicationRecord
     end
 
     def self.user_related(user, page)
-        self.where("source_user_id != #{user.id} AND target_user_hash ->> '#{user.id}' = 'true'")
+        Rails.cache.fetch("/user_related_notifications/#{user.id}/#{page}", expires_in: 2.hours) do
+            self.where("source_user_id != #{user.id} AND target_user_hash ->> '#{user.id}' = 'true'")
+        end
     end
 end

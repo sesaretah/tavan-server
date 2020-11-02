@@ -10,12 +10,16 @@ class Work < ApplicationRecord
     after_create :notify_by_mail
 
     def self.user_works(user)
-        self.joins(:involvements).where("involvements.involveable_type = ? AND involvements.user_id = ?", 'Work', user.id)
+        Rails.cache.fetch("/user_works/#{user.id}", expires_in: 2.hours) do
+            self.joins(:involvements).where("involvements.involveable_type = ? AND involvements.user_id = ?", 'Work', user.id)
+        end
     end
 
     def self.newest_works(user)
-        works =  user_works(user)
-        works.sort_by{ |obj| obj.updated_at }.reverse
+        Rails.cache.fetch("/newest_works/#{user.id}", expires_in: 2.hours) do
+            works =  user_works(user)
+            works.sort_by{ |obj| obj.updated_at }.reverse
+        end
     end
 
     def self.user_events(user)
