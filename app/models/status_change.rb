@@ -4,10 +4,10 @@ class StatusChange < ApplicationRecord
     belongs_to :statusable, :polymorphic => true
     def self.user_changes(user_tasks, user_works)
        
-        #user_task_ids = user_tasks.pluck(:id)
-       # user_work_ids = user_works.pluck(:id)
-        #return self.where("(statusable_type = 'Task' AND statusable_id IN (?)) OR  (statusable_type = 'Work' AND statusable_id IN (?))", user_task_ids, user_work_ids ).limit(10)
-        return []
+        user_task_ids = user_tasks.pluck(:id)
+        user_work_ids = user_works.pluck(:id)
+        return self.where("(statusable_type = 'Task' AND statusable_id IN (?)) OR  (statusable_type = 'Work' AND statusable_id IN (?))", user_task_ids, user_work_ids ).limit(10)
+        #return []
     end
 
     def prev_status
