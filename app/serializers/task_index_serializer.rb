@@ -1,4 +1,6 @@
 class TaskIndexSerializer < ActiveModel::Serializer
+  cache key: "task_index_serializer", expires_in: 3.hours
+
   attributes :id, :title, :details, :the_tags,
              :is_public, :report_alert, :comment_alert, :deadline_alert, :ability
 

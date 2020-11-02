@@ -9,8 +9,8 @@ class V1::HomeController < ApplicationController
     tv = Task.user_tasks(current_user)
     ev = Work.user_works(current_user)
     sc = StatusChange.user_changes(tv, ev)
-    render json: {data: [], klass: 'Home' }, status: :ok
-    #render json: { data: {tasks: jsoner(tasks, TaskIndexSerializer), works: jsoner(works, WorkIndexSerializer) , notifications: jsoner(notifications, NotificationSerializer), reports: jsoner(reports, ReportIndexSerializer), tasks_visits: jsoner(tv, ActivitySerializer), events: jsoner(ev, WorkEventSerializer), status_change: jsoner(sc, StatusChangeSerializer)}, klass: 'Home' }, status: :ok
+    #render json: {data: [], klass: 'Home' }, status: :ok
+    render json: { data: {tasks: jsoner(tasks, TaskIndexSerializer), works: jsoner(works, WorkIndexSerializer) , notifications: jsoner(notifications, NotificationSerializer), reports: jsoner(reports, ReportIndexSerializer), tasks_visits: jsoner(tv, ActivitySerializer), events: jsoner(ev, WorkEventSerializer), status_change: jsoner(sc, StatusChangeSerializer)}, klass: 'Home' }, status: :ok
   end
 
 

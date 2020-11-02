@@ -1,4 +1,5 @@
 class WorkIndexSerializer < ActiveModel::Serializer
+  cache key: "work_index_serializer", expires_in: 3.hours
   include Rails.application.routes.url_helpers
   attributes :id, :title, :details, :start_date, :deadline_date, :created_at, 
              :status, :start_date_j, :deadline_date_j, :start_time, :deadline_time,

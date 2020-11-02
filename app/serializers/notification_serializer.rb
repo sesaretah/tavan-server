@@ -1,7 +1,8 @@
 class NotificationSerializer < ActiveModel::Serializer
+  cache key: "notification_serializer", expires_in: 3.hours
   attributes :id, :profile, :target_type, :target_id, :notification_text
 
-
+  
   def profile
     ProfileSerializer.new(object.user.profile).as_json
   end

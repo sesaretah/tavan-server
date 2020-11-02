@@ -1,5 +1,6 @@
 class ReportIndexSerializer < ActiveModel::Serializer
-  include Rails.application.routes.url_helpers
+  cache key: "report_index_serializer", expires_in: 3.hours
+
   attributes :id, :title, :content,  :creation_date
   belongs_to :profile,  serializer: ProfileSerializer
 
