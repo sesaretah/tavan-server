@@ -5,6 +5,16 @@ class Notification < ApplicationRecord
     after_create :notify_by_mail
     after_create :notify_by_fcm
 
+    after_save :invalidate_caches
+    before_destroy :invalidate_caches
+
+    def invalidate_caches
+        Rails.cache.delete_matched("/user_related_notifications/#{self.source_user_id}/*")
+        for target_user_id in self.target_user_ids
+            Rails.cache.delete_matched("/user_related_notifications/#{target_user_id}/*")
+        end
+    end 
+
     def self.seen_list(notifications)
         for notification in notifications
             notification.seen = true

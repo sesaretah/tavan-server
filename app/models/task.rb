@@ -6,6 +6,10 @@ class Task < ApplicationRecord
     has_many :reports, :dependent => :destroy
     has_many :involvements, :as => :involveable, :dependent => :destroy
     after_create :add_admin
+    
+    after_save :invalidate_caches
+    before_destroy :invalidate_caches
+
     after_save :archive_works
 
     def archive_works
@@ -21,6 +25,14 @@ class Task < ApplicationRecord
             end
         end
     end
+
+    def invalidate_caches
+        Rails.cache.delete_matched("/user_tasks/#{self.user_id}/*")
+        Rails.cache.delete_matched("/order_by_title_for_user/#{self.user_id}/*")
+        Rails.cache.delete_matched("/order_by_deadline_for_user/#{self.user_id}/*")
+        Rails.cache.delete_matched("/user_related_notifications/#{user.id}/*")
+    end 
+
     def access(role)
         case role
         when 'Creator'

@@ -9,6 +9,18 @@ class Work < ApplicationRecord
     after_create :add_admin
     after_create :notify_by_mail
 
+    before_destroy :invalidate_caches
+    after_save :invalidate_caches
+
+    def invalidate_caches
+        for owner_id in self.owners
+            Rails.cache.delete("/user_works/#{owner_id}")
+            Rails.cache.delete("/newest_works/#{owner_id}")
+            Rails.cache.delete_matched("/order_by_deadline_for_user/#{owner_id}/*")
+            Rails.cache.delete_matched("/user_related_notifications/#{owner_id}/*")
+        end
+    end 
+
     def self.user_works(user)
         Rails.cache.fetch("/user_works/#{user.id}", expires_in: 2.hours) do
             self.joins(:involvements).where("involvements.involveable_type = ? AND involvements.user_id = ?", 'Work', user.id)

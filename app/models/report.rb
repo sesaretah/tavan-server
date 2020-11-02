@@ -75,10 +75,10 @@ class Report < ApplicationRecord
     end
 
     def self.user_reports(user)
-        Rails.cache.fetch("/user_reports/#{user.id}", expires_in: 2.hours) do
+        #Rails.cache.fetch("/user_reports/#{user.id}", expires_in: 2.hours) do
             task_ids = Task.user_tasks(user).pluck(:id)
             work_ids = Work.user_works(user).pluck(:id)
             self.where('work_id IN (?) OR task_id IN (?)', work_ids, task_ids).order('updated_at DESC').limit(10)
-        end
+       # end
     end
 end
